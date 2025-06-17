@@ -20,6 +20,7 @@ import { HomePage } from './pages/HomePage';
 import { useTheme } from './context/ThemeContext';
 import { ErrorConnectSupabase } from './components/ErrorComponents/ErrorConnectSupabase';
 import MainLayout from './components/layout/MainLayout';
+import { APP_ROUTES } from './utils/routes';
 
 // Вспомогательный компонент для определения текущего пути
 const TimeNotificationWrapper = () => {
@@ -78,14 +79,14 @@ function App() {
 
             <MainLayout isDarkMode={isDarkMode} toggleTheme={toggleTheme}>
               <Routes>
-                <Route path="/" element={<HomePage isDarkMode={isDarkMode} />} />
-                <Route path="/delivery" element={<DeliveryPage isDarkMode={isDarkMode} />} />
-                <Route path="/cabinet" element={<UserCabinetPage isDarkMode={isDarkMode} />} />
-                <Route path="/restaurant/:id" element={<RestaurantPage isDarkMode={isDarkMode} />} />
-                <Route path="/admin/*" element={<ProtectedAdminRoute />} />
-                <Route path="/privacy-policy" element={<PrivacyPolicyPage isDarkMode={isDarkMode} />} />
-                <Route path="/promotions" element={<PromotionsPage isDarkMode={isDarkMode} />} />
-                <Route path="/knowledge-base" element={<KnowledgeBasePage isDarkMode={isDarkMode} />} />
+                <Route path={APP_ROUTES.HOME} element={<HomePage isDarkMode={isDarkMode} />} />
+                <Route path={APP_ROUTES.DELIVERY} element={<DeliveryPage isDarkMode={isDarkMode} />} />
+                <Route path={APP_ROUTES.CABINET} element={<UserCabinetPage isDarkMode={isDarkMode} />} />
+                <Route path={APP_ROUTES.RESTAURANT.pattern} element={<RestaurantPage isDarkMode={isDarkMode} />} />
+                <Route path={APP_ROUTES.ADMIN} element={<ProtectedAdminRoute />} />
+                <Route path={APP_ROUTES.PRIVACY_POLICY} element={<PrivacyPolicyPage isDarkMode={isDarkMode} />} />
+                <Route path={APP_ROUTES.PROMOTIONS} element={<PromotionsPage isDarkMode={isDarkMode} />} />
+                <Route path={APP_ROUTES.KNOWLEDGE_BASE} element={<KnowledgeBasePage isDarkMode={isDarkMode} />} />
               </Routes>
             </MainLayout>
 

@@ -19,6 +19,7 @@ import {
   UtensilsCrossed,
 } from 'lucide-react';
 import MainButton from '../ui/buttons/MainButton';
+import { APP_ROUTES } from '../../utils/routes';
 
 interface HeaderProps {
   isDarkMode?: boolean;
@@ -123,13 +124,13 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
           )}
         </li>
         <li>
-          <Link to="/delivery" className="navLink flex gap-[8px] text-white">
+          <Link to={APP_ROUTES.DELIVERY} className="navLink flex gap-[8px] text-white">
             <Truck color="white" size={27} />
             <span className="hidden lg:inline">Доставка и оплата</span>
           </Link>
         </li>
         <li>
-          <Link to="/promotions" className="navLink flex gap-[8px] text-white">
+          <Link to={APP_ROUTES.PROMOTIONS} className="navLink flex gap-[8px] text-white">
             <Gift color="white" size={27} />
             <span className="hidden lg:inline">Акции и бонусы</span>
           </Link>
@@ -160,7 +161,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
 
   const renderMobileTopBar = () => (
     <div className="md:hidden flex items-center justify-between px-4">
-      <Link to="/"></Link>
+      <Link to={APP_ROUTES.HOME}></Link>
 
       <div className="flex items-center gap-4">
         <button onClick={toggleCartOpen}>
@@ -192,7 +193,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
               {allRestaurants.map((restaurant) => (
                 <Link
                   key={restaurant.id}
-                  to={`/restaurant/${restaurant.id}`}
+                  to={APP_ROUTES.RESTAURANT.create(restaurant.id)}
                   className="block py-2 text-gray-300 hover:text-white"
                   onClick={() => {
                     setSelectedRestaurant(restaurant);
@@ -207,7 +208,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
         </li>
         <li>
           <Link
-            to="/delivery"
+            to={APP_ROUTES.DELIVERY}
             className="flex items-center gap-3 text-white py-2"
             onClick={() => setIsMobileMenuOpen(false)}
           >
@@ -217,7 +218,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
         </li>
         <li>
           <Link
-            to="/promotions"
+            to={APP_ROUTES.PROMOTIONS}
             className="flex items-center gap-3 text-white py-2"
             onClick={() => setIsMobileMenuOpen(false)}
           >
@@ -237,7 +238,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
           <>
             <li>
               <Link
-                to="/cabinet"
+                to={APP_ROUTES.CABINET}
                 className="flex items-center gap-3 text-white py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
@@ -278,7 +279,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
 
   const renderDesktopBottomNav = () => (
     <div className="hidden md:flex items-center justify-between container mx-auto">
-      <Link to="/" className="text-white">
+      <Link to={APP_ROUTES.HOME} className="text-white">
         Домой(пока что вместо логотипа)
         {/* <img 
           src="/static/img/logo-new.png" 
@@ -293,7 +294,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
 
       <ul className="flex gap-[40px]">
         <li>
-          <Link to="/search" className="navLink flex gap-[8px] text-white">
+          <Link to={APP_ROUTES.HOME} className="navLink flex gap-[8px] text-white">
             <Search color="white" size={25} />
             <span className="hidden lg:inline">Поиск</span>
           </Link>
@@ -308,7 +309,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
               className={`absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg ${isDarkMode ? 'bg-gray-700' : 'bg-[#333]'} hidden group-hover:block`}
             >
               <div className="py-1">
-                <Link to="/cabinet" className="block px-4 py-2 text-white hover:bg-gray-600">
+                <Link to={APP_ROUTES.CABINET} className="block px-4 py-2 text-white hover:bg-gray-600">
                   Личный кабинет
                 </Link>
                 {auth.isOperator && (
@@ -355,14 +356,14 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
     <div className="md:hidden fixed bottom-0 left-0 right-0 bg-[#232323] border-t border-gray-700 z-40">
       <ul className="flex justify-around py-3">
         <li>
-          <Link to="/search" className="flex flex-col items-center text-white">
+          <Link to={APP_ROUTES.HOME} className="flex flex-col items-center text-white">
             <Search size={20} />
             <span className="text-xs mt-1">Поиск</span>
           </Link>
         </li>
         <li>
           {auth.user ? (
-            <Link to="/cabinet" className="flex flex-col items-center text-white">
+            <Link to={APP_ROUTES.CABINET} className="flex flex-col items-center text-white">
               <CircleUserRound size={20} />
               <span className="text-xs mt-1">Аккаунт</span>
             </Link>
