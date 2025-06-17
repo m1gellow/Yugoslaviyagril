@@ -89,7 +89,7 @@ function App() {
     <Router>
       <RestaurantProvider>
         <CartProvider>
-          <div className={cn(`app min-h-screen ${isDarkMode ? 'bg-black' : 'bg-white'}`)}>
+          <div className='app min-h-screen'>
             <CookieConsent isDarkMode={isDarkMode} />
             <TimeNotificationWrapper />
 

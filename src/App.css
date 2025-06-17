@@ -37,6 +37,19 @@
   color: white;
 }
 
+
+.navLink{
+   margin-inline-start: 0.25rem; 
+  color: rgb(0, 0, 0);
+  text-decoration: none; 
+  transition: color 150ms ease-in-out; 
+  font-size: 18px;
+  
+}
+.navLink:hover{
+    color: #f97316;
+}
+
 /* CATEGORY BUTTON STYLES */
 .button-select__category {
   border: 1px solid lightgray;
