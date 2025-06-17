@@ -85,6 +85,8 @@ function App() {
     <ErrorConnectSupabase />;
   }
 
+
+
   return (
     <Router>
       <RestaurantProvider>
@@ -95,7 +97,7 @@ function App() {
 
             {/* Кнопка чата */}
             <ChatButton isDarkMode={isDarkMode} />
-            <MainLayout isDarkMode={isDarkMode} toggleTheme={toggleTheme}>
+            <MainLayout isDarkMode={isDarkMode} toggleTheme={toggleTheme} isCartModalOpen={isCartModalOpen} setIsCartModalOpen={setIsCartModalOpen}>
               <Routes>
                 <Route path="/" element={<HomePage isDarkMode={isDarkMode} toggleTheme={toggleTheme} />} />
                 <Route path="/delivery" element={<DeliveryPage isDarkMode={isDarkMode} />} />

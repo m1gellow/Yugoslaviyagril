@@ -10,13 +10,13 @@ interface MainLayoutProps {
   toggleTheme?: () => void;
 }
 
-const MainLayout = ({ children, isDarkMode, toggleTheme }: MainLayoutProps) => {
+const MainLayout = ({ children, isDarkMode, toggleTheme, isCartModalOpen, setIsCartModalOpen }: MainLayoutProps) => {
   return (
     <div className={cn('flex flex-col min-h-screen', {
       'bg-gray-900 text-white': isDarkMode,
       'bg-white text-gray-900': !isDarkMode
     })}>
-      <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+      <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} isCartModalOpen={isCartModalOpen} setIsCartModalOpen={setIsCartModalOpen}/>
       <main className="flex-grow">
         {children}
       </main>

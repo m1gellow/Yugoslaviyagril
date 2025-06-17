@@ -4,15 +4,16 @@ import { useRestaurant } from './context/RestaurantContext';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthModal from './components/AuthModal';
 import { useSupabase } from './context/SupabaseContext';
-import { CircleUserRound, Moon, Search, ShoppingCart, Store, Truck, UtensilsCrossed, Menu, X, MapPin, Gift, Phone, Sun } from 'lucide-react';
-import cn from 'classnames';
+import { CircleUserRound, Moon, Search, ShoppingCart, Truck, Menu, X, MapPin, Gift, Phone, Sun } from 'lucide-react';
 
 interface HeaderProps {
   isDarkMode?: boolean;
   toggleTheme?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
+// isCartModalOpen={isCartModalOpen} setIsCartModalOpen={setIsCartModalOpen}
+
+const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme, isCartModalOpen, setIsCartModalOpen }) => {
   const { getTotalItems, getTotalPrice } = useCart();
   const { selectedRestaurant, toggleRestaurantList, showRestaurantList, allRestaurants, setSelectedRestaurant } = useRestaurant();
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -361,7 +362,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
               </li>
             )}
             <li>
-              <Link to="/cart" className={'navLink flex gap-[8px] text-white relative'}>
+              <a onClick={() => setIsCartModalOpen(!isCartModalOpen)} className={'navLink flex gap-[8px] text-white relative'}>
                 <ShoppingCart color="white" size={25} />
                 <span className="hidden lg:inline">Корзина</span>
                 {getTotalItems() > 0 && (
@@ -369,7 +370,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
                     {getTotalItems()}
                   </span>
                 )}
-              </Link>
+              </a>
               {getTotalItems() > 0 && (
                 <span className={`absolute mt-1 right-0 text-xs ${
                   isDarkMode ? 'bg-gray-700 text-white' : 'bg-white text-black'
@@ -409,7 +410,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
               )}
             </li>
             <li>
-              <Link to="/cart" className="flex flex-col items-center text-white relative">
+              <a href='#'  className="flex flex-col items-center text-white relative" data-bs-toggle="modal" >
                 <ShoppingCart size={20} />
                 <span className="text-xs mt-1">Корзина</span>
                 {getTotalItems() > 0 && (
@@ -417,7 +418,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
                     {getTotalItems()}
                   </span>
                 )}
-              </Link>
+              </a>
             </li>
           </ul>
         </div>
