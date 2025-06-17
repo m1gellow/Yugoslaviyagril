@@ -1,7 +1,7 @@
 import React from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { sliderImages } from '../utils/mockData';
+import { sliderImages } from '../../utils/mockData';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import cn from 'classnames';
 
@@ -22,7 +22,7 @@ const HeroSlider: React.FC = () => {
   );
 
   return (
-    <div className="container mx-auto mb-8 px-4 sm:px-0">
+    <div className="container mx-auto mb-8 mt-8 px-4 sm:px-0">
       <div className="carousel-container">
         <Carousel
           showArrows={true}

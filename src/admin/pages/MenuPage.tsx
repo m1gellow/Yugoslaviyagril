@@ -494,7 +494,7 @@ const MenuPage: React.FC = () => {
             </div>
 
             {showFilters && (
-              <div className="mt-3 p-3 border-t dark:border-gray-700">
+              <div className="mt-3 p-3 border-t  dark:border-gray-700">
                 <div className="flex flex-wrap gap-2">
                   <button
                     className={`px-3 py-1 rounded-md text-sm ${

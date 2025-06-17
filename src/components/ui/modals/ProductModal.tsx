@@ -1,7 +1,7 @@
 import React from 'react';
-import { Product } from '../types';
+import { Product } from '../../../types';
 import { X, ShoppingCart, Star } from 'lucide-react';
-import { useCart } from '../context/CartContext';
+import { useCart } from '../../../context/CartContext';
 
 interface ProductModalProps {
   product: Product;

@@ -15,9 +15,10 @@ import {
 } from 'lucide-react';
 import { useAdminTheme } from '../context/AdminThemeContext';
 import { useSupabaseData } from '../hooks/useSupabaseData';
-import UserStatusIndicator from '../../components/UserStatusIndicator';
+
 import { supabase } from '../../lib/supabase';
 import { Restaurant, User } from '../../types';
+import UserStatusIndicator from '../../components/common/UserStatusIndicator';
 
 const UsersPage: React.FC = () => {
   const { isDarkMode } = useAdminTheme();

@@ -11,18 +11,6 @@ const ChatButton: React.FC<ChatButtonProps> = ({ isDarkMode = false }) => {
   const [unreadMessages, setUnreadMessages] = useState(0);
   const [bounce, setBounce] = useState(false);
 
-  // Эффект для привлечения внимания к кнопке чата
-  useEffect(() => {
-    // Через 10 секунд после загрузки страницы начинаем анимацию
-    const timer = setTimeout(() => {
-      setBounce(true);
-      // Останавливаем анимацию через 2 секунды
-      setTimeout(() => setBounce(false), 2000);
-    }, 10000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   // Имитация получения непрочитанных сообщений
   useEffect(() => {
     if (!isChatOpen) {
@@ -44,9 +32,9 @@ const ChatButton: React.FC<ChatButtonProps> = ({ isDarkMode = false }) => {
 
   return (
     <>
-      <div className="fixed bottom-24 left-6 z-40">
+      <div className="fixed md:bottom-10 bottom-20 md:right-20 right-14 z-40">
         <button
-          onClick={() => setIsChatOpen(true)}
+          onClick={() => setIsChatOpen(!isChatOpen)}
           className={`flex items-center justify-center w-14 h-14 rounded-full shadow-lg ${
             bounce ? 'animate-bounce' : ''
           } ${isDarkMode ? 'bg-gray-700 text-orange-400' : 'bg-orange-500 text-white'}`}

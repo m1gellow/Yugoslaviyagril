@@ -15,5 +15,5 @@ createRoot(document.getElementById('root')!).render(
         </OnlineStatusProvider>
       </ThemeProvider>
     </SupabaseProvider>
-  </StrictMode>,
+  </StrictMode>
 );

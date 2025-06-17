@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Calendar, Clock, MapPin, Phone } from 'lucide-react';
-import ProductList from '../components/ProductList';
-import CategoryNav from '../components/CategoryNav';
-import SearchBar from '../components/SearchBar';
+import ProductList from '../components/product/ProductList';
+import CategoryNav from '../components/layout/CategoryNav';
+import SearchBar from '../components/common/SearchBar';
 import { Restaurant, Product } from '../types';
 import { restaurants } from '../utils/mockData';
 

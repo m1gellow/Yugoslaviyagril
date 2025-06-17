@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Send, Loader2, User, Clock, ShieldCheck } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import { useSupabase } from '../context/SupabaseContext';
+import { supabase } from '../../lib/supabase';
+import { useSupabase } from '../../context/SupabaseContext';
 
 interface ChatWindowProps {
   isDarkMode?: boolean;
@@ -239,7 +239,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ isDarkMode = false, onClose }) 
   };
 
   return (
-    <div className="fixed bottom-28 right-6 z-50 w-full max-w-sm">
+    <div className="fixed bottom-36 right-6 z-30 w-full max-w-sm">
       <div className={`w-full rounded-lg shadow-xl overflow-hidden ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
         {/* Заголовок окна чата */}
         <div

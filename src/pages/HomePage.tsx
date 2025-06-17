@@ -1,16 +1,14 @@
 import { useState } from 'react';
-import CategoryNav from '../components/CategoryNav';
-import Footer from '../components/Footer';
-import HeroSlider from '../components/HeroSlider';
-import ProductList from '../components/ProductList';
-import RecommendationEngine from '../components/RecommendationEngine';
-import RestaurantSelector from '../components/RestaurantSelector';
-import SearchBar from '../components/SearchBar';
-import Header from '../Header';
+import CategoryNav from '../components/layout/CategoryNav';
+import HeroSlider from '../components/advertising/HeroSlider';
+import ProductList from '../components/product/ProductList';
+import RecommendationEngine from '../components/common/RecommendationEngine';
+import RestaurantSelector from '../components/common/RestaurantSelector';
+import SearchBar from '../components/common/SearchBar';
 import { Product } from '../types';
-import DetailedProductView from '../components/DetailedProductView';
+import DetailedProductView from '../components/product/DetailedProductView';
 
-export const HomePage = ({ isDarkMode, toggleTheme }: { isDarkMode: boolean; toggleTheme: () => void }) => {
+export const HomePage = ({ isDarkMode }: { isDarkMode: boolean }) => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isDetailedViewOpen, setIsDetailedViewOpen] = useState(false);
 

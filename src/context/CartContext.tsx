@@ -14,6 +14,8 @@ interface CartContextType {
   removePromoCode: () => void;
   activePromoCode: string | null;
   promoDiscount: number;
+  toggleCartOpen: () => void;
+  isCartModalOpen: boolean;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -28,10 +30,15 @@ interface CartProviderProps {
 }
 
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
+  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [activePromoCode, setActivePromoCode] = useState<string | null>(null);
   const [promoDiscount, setPromoDiscount] = useState<number>(0); // Скидка в долях (0.1 = 10%)
   const { promoCodes } = useSupabase();
+
+  const toggleCartOpen = () => {
+    setIsCartModalOpen((prev) => (prev === false ? true : false));
+  };
 
   // Загрузка состояния из localStorage при инициализации
   useEffect(() => {
@@ -244,6 +251,9 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         removePromoCode,
         activePromoCode,
         promoDiscount,
+        toggleCartOpen,
+        isCartModalOpen
+
       }}
     >
       {children}

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Product, ProductReview } from '../types';
+import { Product, ProductReview } from '../../types';
 import { X, Plus, Minus, Check, HelpCircle, ChevronRight, Star, MessageCircle, User } from 'lucide-react';
-import { useCart } from '../context/CartContext';
-import { useRestaurant } from '../context/RestaurantContext';
-import { useSupabase } from '../context/SupabaseContext';
-import { supabase } from '../lib/supabase';
+import { useCart } from '../../context/CartContext';
+import { useRestaurant } from '../../context/RestaurantContext';
+import { useSupabase } from '../../context/SupabaseContext';
+import { supabase } from '../../lib/supabase';
 
 interface DetailedProductViewProps {
   product: Product;

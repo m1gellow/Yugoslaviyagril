@@ -1,21 +1,14 @@
-import React, { useState } from 'react';
-import { useCart } from '../context/CartContext';
+import { useState } from 'react';
+import { useCart } from '../../../context/CartContext';
 import { X, Plus, Minus, ShoppingBag, Percent, Check } from 'lucide-react';
-import { useRestaurant } from '../context/RestaurantContext';
-import CheckoutForm from './CheckoutForm';
+import { useRestaurant } from '../../../context/RestaurantContext';
+import CheckoutForm from '../../checkout/CheckoutForm';
 
-interface CartModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose }) => {
+const CartModal = () => {
   const {
     cartItems,
     removeFromCart,
     updateQuantity,
-    getTotalPrice,
-    getTotalItems,
     applyPromoCode,
     removePromoCode,
     activePromoCode,
@@ -26,6 +19,7 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose }) => {
   const [promoCode, setPromoCode] = useState('');
   const [promoError, setPromoError] = useState('');
   const [promoSuccess, setPromoSuccess] = useState('');
+  const { isCartModalOpen, toggleCartOpen } = useCart();
 
   // Получаем темную тему из App компонента через DOM
   const isDarkMode = document.body.classList.contains('dark-mode');
@@ -68,7 +62,7 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose }) => {
 
   // Получаем стоимость доставки
   const getDeliveryPrice = () => {
-    if (subtotal >= (selectedRestaurant.freeDeliveryThreshold || 4000)) {
+    if (subtotal >= (selectedRestaurant.free_delivery_threshold || 4000)) {
       return 0;
     }
     return 200; // Стандартная стоимость доставки
@@ -76,7 +70,7 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose }) => {
 
   const deliveryPrice = getDeliveryPrice();
 
-  if (!isOpen) return null;
+  if (!isCartModalOpen) return null;
 
   if (showCheckout) {
     return (
@@ -87,7 +81,7 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose }) => {
           <div
             className={`inline-block align-middle ${isDarkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg md:max-w-xl lg:max-w-2xl w-full mx-4`}
           >
-            <CheckoutForm onCancel={() => setShowCheckout(false)} onComplete={onClose} isDarkMode={isDarkMode} />
+            <CheckoutForm onCancel={() => setShowCheckout(false)} onComplete={toggleCartOpen} isDarkMode={isDarkMode} />
           </div>
         </div>
       </div>
@@ -108,7 +102,7 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose }) => {
           >
             <h3 className="text-xl font-bold">Корзина</h3>
             <button
-              onClick={onClose}
+              onClick={toggleCartOpen}
               className={`${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-gray-600'}`}
             >
               <X className="w-6 h-6" />

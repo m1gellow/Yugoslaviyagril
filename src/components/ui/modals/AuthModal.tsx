@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { X, Phone, MessageCircle, Mail, Lock, AlertCircle, CheckCircle } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { supabase } from '../../../lib/supabase';
 import { useNavigate } from 'react-router-dom';
-import { useSupabase } from '../context/SupabaseContext';
+import { useSupabase } from '../../../context/SupabaseContext';
 
 interface AuthModalProps {
   isOpen: boolean;

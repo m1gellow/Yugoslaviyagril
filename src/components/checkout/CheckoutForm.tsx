@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useCart } from '../context/CartContext';
+import { useCart } from '../../context/CartContext';
 import { X, Calendar, Clock } from 'lucide-react';
-import { useRestaurant } from '../context/RestaurantContext';
+import { useRestaurant } from '../../context/RestaurantContext';
 
 interface CheckoutFormProps {
   onCancel: () => void;

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Lightbulb, ChevronDown, ChevronUp, ThumbsUp, Star } from 'lucide-react';
-import { useCart } from '../context/CartContext';
-import { useSupabase } from '../context/SupabaseContext';
-import { Product } from '../types';
+import { useCart } from '../../context/CartContext';
+import { useSupabase } from '../../context/SupabaseContext';
+import { Product } from '../../types';
 import { Link } from 'react-router-dom';
 
 interface RecommendationEngineProps {

@@ -12,8 +12,8 @@ import {
   Beef,
   CakeSlice,
 } from 'lucide-react';
-import { useRestaurant } from '../context/RestaurantContext';
-import { useSupabase } from '../context/SupabaseContext';
+import { useRestaurant } from '../../context/RestaurantContext';
+import { useSupabase } from '../../context/SupabaseContext';
 
 interface CategoryNavProps {
   onSelectCategory: (categoryId: string | null) => void;

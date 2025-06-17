@@ -1,7 +1,5 @@
 import React from 'react';
 import { MapPin, Truck, Clock, CreditCard } from 'lucide-react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 
 interface DeliveryPageProps {
   isDarkMode?: boolean;

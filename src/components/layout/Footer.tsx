@@ -11,8 +11,8 @@ import {
   Gift,
   MessageCircle,
 } from 'lucide-react';
-import { useRestaurant } from '../context/RestaurantContext';
-import { useCart } from '../context/CartContext';
+import { useRestaurant } from '../../context/RestaurantContext';
+import { useCart } from '../../context/CartContext';
 import { Link } from 'react-router-dom';
 
 interface FooterProps {
@@ -153,20 +153,6 @@ const Footer: React.FC<FooterProps> = ({ isDarkMode }) => {
             </Link>
           </div>
         </div>
-      </div>
-
-      {/* Sticky cart button for mobile */}
-      <div className="fixed bottom-6 right-6 z-50">
-        <button
-          className={`cart-sticky flex items-center justify-center w-14 h-14 ${isDarkMode ? 'bg-gray-700' : 'bg-white'} rounded-full shadow-lg`}
-        >
-          <a href="#" data-bs-toggle="modal" data-bs-target="#cartModal" className="relative">
-            <ShoppingBag className={`w-6 h-6 ${isDarkMode ? 'text-white' : 'text-gray-800'}`} />
-            <span className="cart-count absolute -top-2 -right-2 w-5 h-5 flex items-center justify-center rounded-full bg-gradient-to-r from-orange-400 to-red-500 text-white text-xs">
-              {getTotalItems()}
-            </span>
-          </a>
-        </button>
       </div>
     </footer>
   );

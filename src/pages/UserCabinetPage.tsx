@@ -3,24 +3,21 @@ import {
   User,
   Receipt,
   Calendar,
-  Truck,
   Percent,
   Heart,
   Gift,
   LogOut,
   Star,
-  ThumbsUp,
   MapPin,
   Edit,
   Plus,
   X,
 } from 'lucide-react';
 
-
 import { useSupabase } from '../context/SupabaseContext';
 import { supabase } from '../lib/supabase';
 import { ProductReview } from '../types';
-import AuthModal from '../components/AuthModal';
+import AuthModal from '../components/ui/modals/AuthModal';
 import { getFromStorage, saveToStorage } from '../utils/localStorageUtils';
 import { useNavigate } from 'react-router-dom';
 
@@ -440,8 +437,6 @@ const UserCabinetPage: React.FC<UserCabinetPageProps> = ({ isDarkMode = false })
         className={`min-h-screen ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-50'}`}
         style={{ backgroundImage: isDarkMode ? 'none' : "url('/assets/img/bg.png')" }}
       >
-      
-
         <div className="container mx-auto px-4 py-8">
           <div className={`${isDarkMode ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-md p-6 mb-8 text-center`}>
             <h2 className="text-2xl font-bold mb-4">Для доступа к личному кабинету необходимо войти в систему</h2>
@@ -465,8 +460,6 @@ const UserCabinetPage: React.FC<UserCabinetPageProps> = ({ isDarkMode = false })
       className={`min-h-screen ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-50'}`}
       style={{ backgroundImage: isDarkMode ? 'none' : "url('/assets/img/bg.png')" }}
     >
-  
-
       <div className="container mx-auto px-4 py-8">
         <div className={`${isDarkMode ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-md p-4 md:p-6 mb-8`}>
           <h1 className={`text-3xl font-bold mb-6 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>Личный кабинет</h1>
@@ -1239,7 +1232,6 @@ const UserCabinetPage: React.FC<UserCabinetPageProps> = ({ isDarkMode = false })
         </div>
       )}
 
- 
       <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} isDarkMode={isDarkMode} />
     </div>
   );

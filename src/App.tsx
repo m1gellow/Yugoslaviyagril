@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import CartModal from './components/CartModal';
-import TimeNotification from './components/TimeNotification';
-import CookieConsent from './components/CookieConsent';
-import { CartProvider } from './context/CartContext';
+import CartModal from './components/ui/modals/CartModal';
+import TimeNotification from './components/common/TimeNotification';
+import CookieConsent from './components/common/CookieConsent';
+import { CartProvider} from './context/CartContext';
 import { RestaurantProvider } from './context/RestaurantContext';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import DeliveryPage from './pages/DeliveryPage';
@@ -14,13 +14,12 @@ import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import PromotionsPage from './pages/PromotionsPage';
 import KnowledgeBasePage from './pages/KnowledgeBasePage';
 import PushNotification from './components/notifications/PushNotification';
-import ChatButton from './components/ChatButton';
+import ChatButton from './components/chat/ChatButton';
 import { checkSupabaseConnection } from './lib/supabase';
 import { HomePage } from './pages/HomePage';
 import { useTheme } from './context/ThemeContext';
 import { ErrorConnectSupabase } from './components/ErrorComponents/ErrorConnectSupabase';
-import cn from 'classnames';
-import MainLayout from './components/MainLayout';
+import MainLayout from './components/layout/MainLayout';
 
 // Вспомогательный компонент для определения текущего пути
 const TimeNotificationWrapper = () => {
@@ -40,10 +39,8 @@ const ProtectedAdminRoute = () => {
 };
 
 function App() {
-  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState<'checking' | 'connected' | 'error'>('checking');
-
-  const {toggleTheme, isDarkMode } = useTheme();
+  const { toggleTheme, isDarkMode } = useTheme();
 
   useEffect(() => {
     // Проверка соединения с Supabase
@@ -66,40 +63,22 @@ function App() {
     checkConnection();
   }, []);
 
-  // Глобальный слушатель событий для корзины
-  useEffect(() => {
-    const handleCartClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (target.closest('a[data-bs-toggle="modal"]')) {
-        e.preventDefault();
-        setIsCartModalOpen(true);
-      }
-    };
-
-    document.addEventListener('click', handleCartClick);
-    return () => document.removeEventListener('click', handleCartClick);
-  }, []);
-
   // Показываем ошибку, если не удалось подключиться к Supabase
   if (connectionStatus === 'error') {
     <ErrorConnectSupabase />;
   }
 
-
-
   return (
     <Router>
       <RestaurantProvider>
         <CartProvider>
-          <div className='app min-h-screen'>
+          <div className="app min-h-screen">
             <CookieConsent isDarkMode={isDarkMode} />
             <TimeNotificationWrapper />
 
-            {/* Кнопка чата */}
-            <ChatButton isDarkMode={isDarkMode} />
-            <MainLayout isDarkMode={isDarkMode} toggleTheme={toggleTheme} isCartModalOpen={isCartModalOpen} setIsCartModalOpen={setIsCartModalOpen}>
+            <MainLayout isDarkMode={isDarkMode} toggleTheme={toggleTheme}>
               <Routes>
-                <Route path="/" element={<HomePage isDarkMode={isDarkMode} toggleTheme={toggleTheme} />} />
+                <Route path="/" element={<HomePage isDarkMode={isDarkMode} />} />
                 <Route path="/delivery" element={<DeliveryPage isDarkMode={isDarkMode} />} />
                 <Route path="/cabinet" element={<UserCabinetPage isDarkMode={isDarkMode} />} />
                 <Route path="/restaurant/:id" element={<RestaurantPage isDarkMode={isDarkMode} />} />
@@ -109,7 +88,9 @@ function App() {
                 <Route path="/knowledge-base" element={<KnowledgeBasePage isDarkMode={isDarkMode} />} />
               </Routes>
             </MainLayout>
-            <CartModal isOpen={isCartModalOpen} onClose={() => setIsCartModalOpen(false)} />
+
+            <ChatButton isDarkMode={isDarkMode} />
+            <CartModal />
 
             {/* Компонент пуш уведомлений */}
             <PushNotification isDarkMode={isDarkMode} />

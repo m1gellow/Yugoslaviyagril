@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, ChevronDown, Store, Clock, CheckCircle, AlertTriangle, Search, X } from 'lucide-react';
-import { useRestaurant } from '../context/RestaurantContext';
+import { useRestaurant } from '../../context/RestaurantContext';
 import { Link } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
+import { useCart } from '../../context/CartContext';
 
 interface RestaurantSelectorProps {
   isDarkMode?: boolean;

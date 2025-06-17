@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ProductCard from './ProductCard';
-import { Product } from '../types';
-import { useSupabase } from '../context/SupabaseContext';
+import { Product } from '../../types';
+import { useSupabase } from '../../context/SupabaseContext';
 
 interface ProductListProps {
   selectedCategoryId: string | null;

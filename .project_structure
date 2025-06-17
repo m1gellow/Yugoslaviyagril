@@ -1,0 +1,43 @@
+components/
+├── ui/                     # Переиспользуемые компоненты (buttons, inputs, etc.)
+│   ├── buttons/
+│   │   ├── MainButton.tsx
+│   │   └── IconButton.tsx
+│   ├── modals/
+│   │   ├── AuthModal.tsx
+│   │   ├── CartModal.tsx
+│   │   └── ProductModal.tsx
+│   └── ThemeToggle.tsx
+│
+├── layout/                 # Layout зависимые компоненты
+│   ├── MainLayout.tsx
+│   ├── Header.tsx
+│   ├── Footer.tsx
+│   └── CategoryNav.tsx
+│
+├── product/                # компоненты, связанные с продуктами
+│   ├── ProductCard.tsx
+│   ├── ProductList.tsx
+│   ├── DetailedProductView.tsx
+│   └── RecommendationEngine.tsx
+│
+├── chat/                   # компоненты, связанные с чатом
+│   ├── ChatButton.tsx
+│   └── ChatWindow.tsx
+│
+├── checkout/               # компоненты, связанные с покупкой / заказом
+│   ├── CheckoutForm.tsx
+│   └── CartSummary.tsx   
+│
+├── common/                 # Компоненты общего назначения
+│   ├── SearchBar.tsx
+│   ├── RestaurantSelector.tsx
+│   ├── CookieConsent.tsx
+│   ├── TimeNotification.tsx
+│   └── UserStatusIndicator.tsx
+│
+├── marketing/              # Рекламные / маркетинг материалы
+│   ├── HeroSlider.tsx
+│   
+│
+└── ErrorComponents/        # Компоненты с Ошибками

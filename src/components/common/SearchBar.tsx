@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Search, X, Filter, MapPin, Star } from 'lucide-react';
-import { products, categories } from '../utils/mockData';
-import { useRestaurant } from '../context/RestaurantContext';
-import { Product } from '../types';
-import { Link } from 'react-router-dom';
-import { fuzzySearch, levenshteinMatch } from '../utils/searchUtils';
+import { products, categories } from '../../utils/mockData';
+import { useRestaurant } from '../../context/RestaurantContext';
+import { Product } from '../../types';
+import { fuzzySearch, levenshteinMatch } from '../../utils/searchUtils';
 
 interface SearchBarProps {
   onSelectProduct?: (product: Product) => void;

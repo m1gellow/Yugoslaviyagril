@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Wifi, WifiOff, Clock } from 'lucide-react';
-import { useOnlineStatus } from '../context/OnlineStatusContext';
+import { useOnlineStatus } from '../../context/OnlineStatusContext';
 import { formatDistanceToNow } from 'date-fns';
 import { ru } from 'date-fns/locale';
 
