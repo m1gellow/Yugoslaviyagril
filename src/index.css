@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root{
+  --darkTheme-color: rgb(50, 50, 50);
+}
+
+body {
+  font-family: 'Philosopher', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.cash_sum:after {
+  content: '₽';
+  padding-left: 5px;
+}
+
+.input-number {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  box-sizing: border-box;
+  border-radius: 6px;
+  color: #424348;
+  font-size: 14px;
+  text-align: center;
+}
+
+.input-number__input {
+  background: #e5e8ee;
+  width: 32px;
+  height: 32px;
+  border: none;
+  padding: 8px;
+  text-align: center;
+}
+
+.input-number__minus,
+.input-number__plus {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+}
