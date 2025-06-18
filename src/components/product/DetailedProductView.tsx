@@ -89,13 +89,6 @@ const DetailedProductView: React.FC<DetailedProductViewProps> = ({ product, isOp
   };
 
   const handleAddToCart = () => {
-    const cartItem = {
-      product,
-      quantity,
-      selectedSauce,
-      selectedSides,
-    };
-
     addToCart(product, quantity, selectedSauce, selectedSides);
     onClose();
   };

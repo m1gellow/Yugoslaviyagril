@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import Header from './Header';
 import cn from 'classnames';
 import Footer from './Footer';
+import { useLocation } from 'react-router-dom';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -11,6 +12,8 @@ interface MainLayoutProps {
 }
 
 const MainLayout = ({ children, isDarkMode, toggleTheme }: MainLayoutProps) => {
+  const location = useLocation();
+
   return (
     <div
       className={cn('flex flex-col min-h-screen', {
@@ -18,9 +21,10 @@ const MainLayout = ({ children, isDarkMode, toggleTheme }: MainLayoutProps) => {
         'bg-white text-gray-900': !isDarkMode,
       })}
     >
-      <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+      {!location.pathname.startsWith('/admin/') && <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />}
+
       <main className="flex-grow">{children}</main>
-      <Footer isDarkMode={isDarkMode} />
+      {!location.pathname.startsWith('/admin/') && <Footer isDarkMode={isDarkMode} />}
     </div>
   );
 };

@@ -1,13 +1,14 @@
 
 interface MainButton{
-    text: string;
+    children: React.ReactNode;
     onClick?: () => void;
+    type?: "submit" | 'button'
 }
 
-const MainButton = ({ text}: MainButton) => {
+const MainButton = ({children, type="button"}: MainButton) => {
   return (
-    <button  className="px-6 lg:px-12 py-[7px] bg-gradient-to-r from-orange-400 to-red-500 text-white rounded-full text-sm">
-      {text}
+    <button type={type} className="px-6 lg:px-12 py-[7px] bg-gradient-to-r from-orange-400 to-red-500 text-white rounded-full text-sm">
+      {children}
     </button>
   );
 };

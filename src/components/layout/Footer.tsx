@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  ShoppingBag,
   MapPin,
   Phone,
   Mail,
@@ -11,8 +10,6 @@ import {
   Gift,
   MessageCircle,
 } from 'lucide-react';
-import { useRestaurant } from '../../context/RestaurantContext';
-import { useCart } from '../../context/CartContext';
 import { Link } from 'react-router-dom';
 
 interface FooterProps {
@@ -20,8 +17,6 @@ interface FooterProps {
 }
 
 const Footer: React.FC<FooterProps> = ({ isDarkMode }) => {
-  const { selectedRestaurant } = useRestaurant();
-  const { getTotalItems } = useCart();
 
   return (
     <footer

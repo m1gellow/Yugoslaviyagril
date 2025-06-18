@@ -3,10 +3,11 @@ import { Product } from '../../types';
 import { HelpCircle, ShoppingCart, Heart, Star, MapPin } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useRestaurant } from '../../context/RestaurantContext';
-import ProductModal from '../ui/modals/ProductModal';
-import DetailedProductView from '../product/DetailedProductView';
+
+// import DetailedProductView from '../product/DetailedProductView';
 import { useSupabase } from '../../context/SupabaseContext';
 import { getFromStorage, saveToStorage } from '../../utils/localStorageUtils';
+import { ProductModal } from '../ui';
 
 // Ключ для localStorage
 const LIKED_ITEMS_KEY = 'yugoslavia_grill_liked_items';
@@ -19,7 +20,7 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, restaurantId, isDarkMode }) => {
-  const { addToCart } = useCart();
+
   const { getProductPrice, selectedRestaurant } = useRestaurant();
   const { getProductPriceForRestaurant, restaurants } = useSupabase();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -62,11 +63,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, restaurantId, isDark
   }, [product.id]);
 
   const handleOpenDetailedView = () => {
-    // Создаем продукт с актуальной ценой для выбранного ресторана
-    const productWithCorrectPrice = {
-      ...product,
-      price: calculatedPrice,
-    };
 
     // Открываем детальный просмотр с обновленным продуктом
     setIsDetailedViewOpen(true);
@@ -225,11 +221,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, restaurantId, isDark
         isDarkMode={isDarkMode}
       />
 
-      <DetailedProductView
+      {/* <DetailedProductView
         product={{ ...product, price: calculatedPrice }}
         isOpen={isDetailedViewOpen}
         onClose={() => setIsDetailedViewOpen(false)}
-      />
+      /> */}
     </>
   );
 };

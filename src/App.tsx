@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import CartModal from './components/ui/modals/CartModal';
+
 import TimeNotification from './components/common/TimeNotification';
 import CookieConsent from './components/common/CookieConsent';
 import { CartProvider} from './context/CartContext';
@@ -21,6 +21,7 @@ import { useTheme } from './context/ThemeContext';
 import { ErrorConnectSupabase } from './components/ErrorComponents/ErrorConnectSupabase';
 import MainLayout from './components/layout/MainLayout';
 import { APP_ROUTES } from './utils/routes';
+import { CartModal } from './components/ui';
 
 // Вспомогательный компонент для определения текущего пути
 const TimeNotificationWrapper = () => {

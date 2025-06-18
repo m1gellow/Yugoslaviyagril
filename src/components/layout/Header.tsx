@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useCart } from '../../context/CartContext';
+import { useCart, useCartInfo } from '../../context/CartContext';
 import { useRestaurant } from '../../context/RestaurantContext';
 import { Link, useNavigate } from 'react-router-dom';
-import AuthModal from '../ui/modals/AuthModal';
+import Logo from '../../../public/static/img/MainLogo.svg';
+
 import { useSupabase } from '../../context/SupabaseContext';
 import {
   CircleUserRound,
@@ -18,8 +19,9 @@ import {
   Sun,
   UtensilsCrossed,
 } from 'lucide-react';
-import MainButton from '../ui/buttons/MainButton';
 import { APP_ROUTES } from '../../utils/routes';
+
+import { AuthModal, MainButton } from '../ui';
 
 interface HeaderProps {
   isDarkMode?: boolean;
@@ -27,7 +29,8 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
-  const { getTotalItems, toggleCartOpen } = useCart();
+  const { toggleCartOpen } = useCart();
+  const { totalItems, totalPrice } = useCartInfo();
   const { toggleRestaurantList, showRestaurantList, allRestaurants, setSelectedRestaurant } = useRestaurant();
   const { auth, signOut } = useSupabase();
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -37,6 +40,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
   const [visible, setVisible] = useState(true);
   const navRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const [isUserMenuOpen,setIsOpenUserMenu ] = useState(false)
 
   const restaurantListRef = useRef<HTMLDivElement>(null);
 
@@ -94,81 +98,91 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
   }, [showRestaurantList]);
 
   const renderDesktopTopNav = () => (
-    <div className="hidden md:flex items-center pb-[15px] justify-between border-b border-gray-400/20 container mx-auto">
-      <ul className="flex gap-[40px]">
-        <li className="relative">
-          <div className="navLink flex gap-[8px] text-white cursor-pointer" onClick={toggleRestaurantList}>
-            <UtensilsCrossed color="white" size={27} />
-            <span className="hidden lg:inline">Рестораны</span>
-          </div>
-          {showRestaurantList && (
-            <div
-              ref={restaurantListRef}
-              className={`absolute top-full left-0 mt-2 w-64 rounded-md shadow-lg z-50 p-3 ${isDarkMode ? 'bg-gray-700' : 'bg-white'}`}
-            >
-              {allRestaurants.map((restaurant) => (
-                <div key={restaurant.id} className="m-2 pb-2 border-b border-gray-600">
-                  <Link
-                    to={`/restaurant/${restaurant.id}`}
-                    className="hover:text-orange-500 transition"
-                    onClick={() => {
-                      setSelectedRestaurant(restaurant);
-                      toggleRestaurantList();
-                    }}
-                  >
-                    {restaurant.name} ({restaurant.address})
-                  </Link>
-                </div>
-              ))}
+  <div className="hidden md:block border-b border-gray-400/20">
+    <div className="container mx-auto">
+      <div className="flex items-center py-[23px] justify-between">
+        <ul className="flex gap-[40px]">
+          <li className="relative">
+            <div className="navLink flex gap-[8px] text-white cursor-pointer" onClick={toggleRestaurantList}>
+              <UtensilsCrossed color="white" size={27} />
+              <span className="hidden lg:inline">Рестораны</span>
             </div>
-          )}
-        </li>
-        <li>
-          <Link to={APP_ROUTES.DELIVERY} className="navLink flex gap-[8px] text-white">
-            <Truck color="white" size={27} />
-            <span className="hidden lg:inline">Доставка и оплата</span>
-          </Link>
-        </li>
-        <li>
-          <Link to={APP_ROUTES.PROMOTIONS} className="navLink flex gap-[8px] text-white">
-            <Gift color="white" size={27} />
-            <span className="hidden lg:inline">Акции и бонусы</span>
-          </Link>
-        </li>
-      </ul>
+            {showRestaurantList && (
+              <div
+                ref={restaurantListRef}
+                className={`absolute top-full left-0 mt-2 w-64 rounded-md shadow-lg z-50 p-3 ${isDarkMode ? 'bg-gray-700' : 'bg-white'}`}
+              >
+                {allRestaurants.map((restaurant) => (
+                  <div key={restaurant.id} className="m-2 pb-2 border-b border-gray-600 last:border-b-0">
+                    <Link
+                      to={`/restaurant/${restaurant.id}`}
+                      className={`block hover:text-orange-500 transition ${isDarkMode ? 'text-white' : 'text-gray-800'}`}
+                      onClick={() => {
+                        setSelectedRestaurant(restaurant);
+                        toggleRestaurantList();
+                      }}
+                    >
+                      {restaurant.name} ({restaurant.address})
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            )}
+          </li>
+          <li>
+            <Link to={APP_ROUTES.DELIVERY} className="navLink flex gap-[8px] text-white hover:text-orange-400 transition">
+              <Truck color="currentColor" size={27} />
+              <span className="hidden lg:inline">Доставка и оплата</span>
+            </Link>
+          </li>
+          <li>
+            <Link to={APP_ROUTES.PROMOTIONS} className="navLink flex gap-[8px] text-white hover:text-orange-400 transition">
+              <Gift color="currentColor" size={27} />
+              <span className="hidden lg:inline">Акции и бонусы</span>
+            </Link>
+          </li>
+        </ul>
 
-      <div className="flex gap-[20px] lg:gap-[40px] items-center">
-        <div className="hidden lg:flex items-center gap-2">
-          <Phone color="white" size={20} />
-          <div className="flex flex-col">
-            <span className="text-[#AAA9A9] text-sm">Телефон Доставки</span>
-            <a href="tel:+79370000307" className="navLink text-white">
-              +7 (919) 381-27-70
-            </a>
+        <div className="flex gap-[20px] lg:gap-[40px] items-center">
+          <div className="hidden lg:flex items-center gap-2">
+            <Phone color="white" size={20} />
+            <div className="flex flex-col">
+              <span className="text-[#AAA9A9] text-sm">Телефон Доставки</span>
+              <a href="tel:+79370000307" className="navLink text-white hover:text-orange-400 transition">
+                +7 (919) 381-27-70
+              </a>
+            </div>
           </div>
+
+          {toggleTheme && (
+            <button 
+              onClick={toggleTheme} 
+              className="p-2 rounded-full bg-gray-600 hover:bg-gray-500 transition-colors"
+              aria-label={isDarkMode ? 'Светлая тема' : 'Темная тема'}
+            >
+              {isDarkMode ? <Sun className="h-5 w-5 text-yellow-400" /> : <Moon className="h-5 w-5 text-white" />}
+            </button>
+          )}
+
+          <MainButton>Заказать Доставку</MainButton>
         </div>
-
-        {toggleTheme && (
-          <button onClick={toggleTheme} className="p-2 rounded-full bg-gray-600 hover:bg-gray-500">
-            {isDarkMode ? <Sun className="h-5 w-5 text-yellow-400" /> : <Moon className="h-5 w-5 text-white" />}
-          </button>
-        )}
-
-        <MainButton text="Заказать Доставку" />
       </div>
     </div>
-  );
+  </div>
+);
 
   const renderMobileTopBar = () => (
-    <div className="md:hidden flex items-center justify-between px-4">
-      <Link to={APP_ROUTES.HOME}></Link>
+    <div className="md:hidden py-[10px] flex items-center justify-between px-4">
+      <Link to={APP_ROUTES.HOME}>
+        <img src={Logo} alt="" />
+      </Link>
 
       <div className="flex items-center gap-4">
         <button onClick={toggleCartOpen}>
           <ShoppingCart color="white" size={24} />
-          {getTotalItems() > 0 && (
-            <span className="absolute -top-2 -right-2 w-5 h-5 flex items-center justify-center rounded-full bg-gradient-to-r from-orange-400 to-red-500 text-white text-xs">
-              {getTotalItems()}
+          {totalItems && (
+            <span className="absolute top-3 right-12 w-5 h-5 flex items-center justify-center rounded-full bg-gradient-to-r from-orange-400 to-red-500 text-white text-xs">
+              {totalItems}
             </span>
           )}
         </button>
@@ -278,21 +292,12 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
   );
 
   const renderDesktopBottomNav = () => (
-    <div className="hidden md:flex items-center justify-between container mx-auto">
-      <Link to={APP_ROUTES.HOME} className="text-white">
-        Домой(пока что вместо логотипа)
-        {/* <img 
-          src="/static/img/logo-new.png" 
-          alt="Логотип" 
-          className="h-12"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.src = 'https://via.placeholder.com/150x50?text=Логотип';
-          }}
-        /> */}
+    <div className="hidden md:flex items-center py-[23px]  justify-between container mx-auto">
+      <Link to={APP_ROUTES.HOME}>
+        <img src={Logo} alt="Logo" />
       </Link>
 
-      <ul className="flex gap-[40px]">
+      <ul className="flex  items-center gap-[40px]">
         <li>
           <Link to={APP_ROUTES.HOME} className="navLink flex gap-[8px] text-white">
             <Search color="white" size={25} />
@@ -301,12 +306,12 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
         </li>
         {auth.user ? (
           <li className="relative group">
-            <div className="navLink flex gap-[8px] text-white cursor-pointer">
+            <div className="navLink flex gap-[8px] text-white cursor-pointer" onClick={() => setIsOpenUserMenu(!isUserMenuOpen)}>
               <CircleUserRound color="white" size={25} />
               <span className="hidden lg:inline">{auth.profile?.name || 'Аккаунт'}</span>
             </div>
             <div
-              className={`absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg ${isDarkMode ? 'bg-gray-700' : 'bg-[#333]'} hidden group-hover:block`}
+              className={`absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg ${isDarkMode ? 'bg-gray-700' : 'bg-[#333]'} ${isUserMenuOpen ? "block" : 'hidden'}`}
             >
               <div className="py-1">
                 <Link to={APP_ROUTES.CABINET} className="block px-4 py-2 text-white hover:bg-gray-600">
@@ -338,14 +343,16 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
           </li>
         )}
         <li>
-          <button onClick={toggleCartOpen} className="navLink flex gap-[8px] text-white relative">
-            <ShoppingCart color="white" size={25} />
-            <span className="hidden lg:inline">Корзина</span>
-            {getTotalItems() > 0 && (
-              <span className="absolute -top-2 -right-2 w-5 h-5 flex items-center justify-center rounded-full bg-gradient-to-r from-orange-400 to-red-500 text-white text-xs">
-                {getTotalItems()}
+          <button onClick={toggleCartOpen} className="navLink  flex items-center gap-[20px] text-white relative">
+            {totalItems && (
+              <span className="absolute hidden -top-2  right-[70px] w-5 h-5 md:flex items-center justify-center rounded-full bg-gradient-to-r from-orange-400 to-red-500 text-white text-xs">
+                {totalItems}
               </span>
             )}
+
+            <ShoppingCart color="white" size={25} />
+
+            {totalPrice && <span className="block px-[5px]   rounded-full">{totalPrice}₽</span>}
           </button>
         </li>
       </ul>
@@ -378,9 +385,9 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
           <button onClick={toggleCartOpen} className="flex flex-col items-center text-white relative">
             <ShoppingCart size={20} />
             <span className="text-xs mt-1">Корзина</span>
-            {getTotalItems() > 0 && (
+            {totalItems && (
               <span className="absolute top-0 right-2 w-4 h-4 flex items-center justify-center rounded-full bg-gradient-to-r from-orange-400 to-red-500 text-white text-[10px]">
-                {getTotalItems()}
+                {totalItems}
               </span>
             )}
           </button>
@@ -393,7 +400,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
     <>
       <nav
         ref={navRef}
-        className={`w-full flex flex-col py-[15px] gap-5 ${isDarkMode ? 'bg-gray-800' : 'bg-[#232323]'} sticky top-0 z-50 transition-transform duration-300 ease-in-out ${
+        className={`w-full flex flex-col ${isDarkMode ? 'bg-gray-800' : 'bg-[#232323]'} sticky top-0 z-50 transition-transform duration-300 ease-in-out ${
           isScrolled ? 'shadow-lg' : ''
         } ${visible ? 'translate-y-0' : '-translate-y-full'}`}
       >

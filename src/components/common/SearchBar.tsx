@@ -16,7 +16,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelectProduct, isDarkMode }) =>
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [activeFilters, setActiveFilters] = useState<number[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 2000]);
-  const [showFilters, setShowFilters] = useState(false);
   const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
 
   const { selectedRestaurant, allRestaurants, setSelectedRestaurant } = useRestaurant();
@@ -208,21 +207,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelectProduct, isDarkMode }) =>
           )}
         </div>
 
-        <button
-          onClick={() => setShowFilters(!showFilters)}
-          className={`px-4 py-2 border rounded-r-md flex items-center ${
-            isDarkMode
-              ? showFilters
-                ? 'bg-gray-700 border-gray-600'
-                : 'bg-gray-800 border-gray-700'
-              : showFilters
-                ? 'bg-orange-50 border-orange-300'
-                : 'bg-white border-orange-300'
-          }`}
-        >
-          <Filter className={`h-5 w-5 ${isDarkMode ? 'text-orange-400' : 'text-orange-500'} mr-2`} />
-          <span>Фильтры</span>
-        </button>
+      
       </div>
 
       {/* Поисковые подсказки */}
@@ -249,182 +234,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelectProduct, isDarkMode }) =>
         </div>
       )}
 
-      {showFilters && (
-        <div
-          className={`mt-2 p-5 ${
-            isDarkMode ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-orange-200'
-          } rounded-md shadow-lg animate-slideUp`}
-        >
-          <div className="mb-5">
-            <h3 className={`font-medium mb-3 ${isDarkMode ? 'text-white' : ''}`}>Категории</h3>
-            <div className="flex flex-wrap gap-2">
-              {categories.map((category) => (
-                <button
-                  key={category.id}
-                  onClick={() => toggleFilter(category.id)}
-                  className={`px-3 py-1.5 rounded-full text-sm ${
-                    activeFilters.includes(category.id)
-                      ? 'bg-gradient-to-r from-orange-400 to-red-500 text-white'
-                      : isDarkMode
-                        ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                        : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
-                  }`}
-                >
-                  {category.name}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="mb-5">
-            <h3 className={`font-medium mb-3 ${isDarkMode ? 'text-white' : ''}`}>Цена, ₽</h3>
-            <div className="space-y-6">
-              <div className="flex items-center space-x-2">
-                <span className={`w-12 text-center ${isDarkMode ? 'text-white' : ''}`}>{priceRange[0]}₽</span>
-                <div className="flex-1 relative h-6">
-                  <div
-                    className={`absolute h-1 top-1/2 transform -translate-y-1/2 left-0 right-0 rounded-full ${isDarkMode ? 'bg-gray-600' : 'bg-gray-200'}`}
-                  ></div>
-                  <input
-                    type="range"
-                    min="0"
-                    max="2000"
-                    step="50"
-                    value={priceRange[0]}
-                    onChange={(e) => handlePriceRangeChange(e, 0)}
-                    className="absolute h-6 w-full appearance-none bg-transparent"
-                    style={{
-                      WebkitAppearance: 'none',
-                      background: 'transparent',
-                      cursor: 'pointer',
-                    }}
-                  />
-                </div>
-                <span className={`w-12 text-center ${isDarkMode ? 'text-white' : ''}`}>{priceRange[1]}₽</span>
-              </div>
-
-              {/* Стилизованный трек для ползунка */}
-              <style jsx>{`
-                input[type='range']::-webkit-slider-thumb {
-                  -webkit-appearance: none;
-                  height: 16px;
-                  width: 16px;
-                  border-radius: 50%;
-                  background: linear-gradient(to right, #f97316, #ef4444);
-                  cursor: pointer;
-                  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-                }
-                input[type='range']::-moz-range-thumb {
-                  height: 16px;
-                  width: 16px;
-                  border-radius: 50%;
-                  background: linear-gradient(to right, #f97316, #ef4444);
-                  cursor: pointer;
-                  border: none;
-                  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-                }
-              `}</style>
-
-              <div className="relative pt-1">
-                <div
-                  className={`flex h-2 mb-4 overflow-hidden rounded-full ${isDarkMode ? 'bg-gray-700' : 'bg-gray-200'}`}
-                >
-                  <div
-                    className="bg-gradient-to-r from-orange-400 to-red-500"
-                    style={{
-                      width: `${((priceRange[1] - priceRange[0]) / 2000) * 100}%`,
-                      marginLeft: `${(priceRange[0] / 2000) * 100}%`,
-                    }}
-                  ></div>
-                </div>
-
-                <div className="flex justify-between">
-                  <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>0₽</span>
-                  <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>500₽</span>
-                  <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>1000₽</span>
-                  <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>1500₽</span>
-                  <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>2000₽</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="mb-5">
-            <h3 className={`font-medium mb-3 ${isDarkMode ? 'text-white' : ''}`}>Ресторан</h3>
-            <div className={`${isDarkMode ? 'bg-gray-700' : 'bg-gray-50'} p-3 rounded-lg`}>
-              <p className={`mb-3 text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                При выборе другого ресторана цены на товары могут отличаться
-              </p>
-              <div className="flex flex-col space-y-2">
-                {allRestaurants.map((restaurant) => (
-                  <label
-                    key={restaurant.id}
-                    className={`flex items-center p-2 rounded-lg ${
-                      selectedRestaurant.id === restaurant.id
-                        ? isDarkMode
-                          ? 'bg-gray-600'
-                          : 'bg-orange-50'
-                        : isDarkMode
-                          ? 'hover:bg-gray-600'
-                          : 'hover:bg-gray-100'
-                    } cursor-pointer`}
-                  >
-                    <input
-                      type="radio"
-                      name="restaurant"
-                      className="mr-2 h-4 w-4 text-orange-500 focus:ring-orange-500"
-                      checked={selectedRestaurant.id === restaurant.id}
-                      onChange={() => handleRestaurantChange(restaurant.id)}
-                    />
-                    <div className="flex items-center">
-                      <MapPin className={`w-4 h-4 ${isDarkMode ? 'text-orange-400' : 'text-orange-500'} mr-1`} />
-                      <span className={isDarkMode ? 'text-gray-300' : ''}>
-                        {restaurant.name} ({restaurant.address})
-                      </span>
-                    </div>
-                  </label>
-                ))}
-              </div>
-
-              {/* Информация о ценах */}
-              <div
-                className={`mt-3 p-2 rounded ${isDarkMode ? 'bg-gray-800 text-gray-300' : 'bg-orange-50 text-gray-700'} text-xs`}
-              >
-                <p>
-                  <strong>Ресторан на Белинского</strong> — премиум-цены (немного дороже)
-                </p>
-                <p>
-                  <strong>Кафе на Ясной</strong> — стандартные цены
-                </p>
-                <p>
-                  <strong>Кафе на Фронтовых бригад</strong> — стандартные цены
-                </p>
-                <p>
-                  <strong>Закусочная на Латвийской</strong> — экономичные цены (немного дешевле)
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex justify-between">
-            <button
-              onClick={() => {
-                setActiveFilters([]);
-                setPriceRange([0, 2000]);
-              }}
-              className={`${isDarkMode ? 'text-orange-400 hover:text-orange-300' : 'text-orange-500 hover:underline'}`}
-            >
-              Сбросить фильтры
-            </button>
-            <button
-              onClick={() => setShowFilters(false)}
-              className="px-4 py-1.5 bg-gradient-to-r from-orange-400 to-red-500 text-white rounded-md"
-            >
-              Применить
-            </button>
-          </div>
-        </div>
-      )}
 
       {showResults && (
         <div

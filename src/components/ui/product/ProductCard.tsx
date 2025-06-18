@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Product } from '../../types';
+import { Product } from '../../../types';
 import { HelpCircle, ShoppingCart, Heart, Star, MapPin } from 'lucide-react';
-import { useCart } from '../../context/CartContext';
-import { useRestaurant } from '../../context/RestaurantContext';
-import ProductModal from './ProductModal';
-import DetailedProductView from '../../DetailedProductView';
-import { useSupabase } from '../../context/SupabaseContext';
-import { getFromStorage, saveToStorage } from '../../utils/localStorageUtils';
+import { useRestaurant } from '../../../context/RestaurantContext';
+
+
+import { useSupabase } from '../../../context/SupabaseContext';
+import { getFromStorage, saveToStorage } from '../../../utils/localStorageUtils';
+import ProductModal from '../modals/ProductModal';
+import DetailedProductView from '../../product/DetailedProductView';
 
 // Ключ для localStorage
 const LIKED_ITEMS_KEY = 'yugoslavia_grill_liked_items';
@@ -19,7 +20,6 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, restaurantId, isDarkMode }) => {
-  const { addToCart } = useCart();
   const { getProductPrice, selectedRestaurant } = useRestaurant();
   const { getProductPriceForRestaurant, restaurants } = useSupabase();
   const [isModalOpen, setIsModalOpen] = useState(false);

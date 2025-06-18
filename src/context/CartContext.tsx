@@ -261,6 +261,19 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   );
 };
 
+
+export const useCartInfo = () => {
+  const {getTotalItems, getTotalPrice} = useCart()
+
+  const totalItems = getTotalItems()
+  const totalPrice = getTotalPrice()
+
+  return {
+    totalItems: totalItems > 0 ? totalItems : null,
+    totalPrice: totalPrice > 0 ? totalPrice : null
+  }
+}
+
 export const useCart = (): CartContextType => {
   const context = useContext(CartContext);
   if (context === undefined) {
@@ -268,3 +281,5 @@ export const useCart = (): CartContextType => {
   }
   return context;
 };
+
+

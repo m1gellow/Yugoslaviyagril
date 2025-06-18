@@ -17,9 +17,10 @@ import {
 import { useSupabase } from '../context/SupabaseContext';
 import { supabase } from '../lib/supabase';
 import { ProductReview } from '../types';
-import AuthModal from '../components/ui/modals/AuthModal';
+
 import { getFromStorage, saveToStorage } from '../utils/localStorageUtils';
 import { useNavigate } from 'react-router-dom';
+import { AuthModal } from '../components/ui';
 
 // Ключи для localStorage
 const LIKED_ITEMS_KEY = 'yugoslavia_grill_liked_items';

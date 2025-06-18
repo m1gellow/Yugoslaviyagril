@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Bell, BellOff, AlertTriangle, X, Check } from 'lucide-react';
+import { Bell, BellOff, AlertTriangle, X} from 'lucide-react';
 import { askForPermission, isPushNotificationSupported } from '../../utils/notificationUtils';
 
 interface PushNotificationProps {

@@ -22,7 +22,7 @@ const HeroSlider: React.FC = () => {
   );
 
   return (
-    <div className="container mx-auto mb-8 mt-8 px-4 sm:px-0">
+    <div className="container mx-auto select-none mb-8 mt-[80px] px-4 sm:px-0">
       <div className="carousel-container">
         <Carousel
           showArrows={true}
