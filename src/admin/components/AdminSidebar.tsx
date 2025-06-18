@@ -14,7 +14,7 @@ import {
   Tag,
   MessageCircle,
 } from 'lucide-react';
-import { useAdminTheme } from '../context/AdminThemeContext';
+
 import { adminRoutes, getRoutesByRole } from '../routes/adminRoutes';
 import { useSupabase } from '../../context/SupabaseContext';
 
@@ -35,7 +35,6 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
   userRole,
   userName,
 }) => {
-  const { isDarkMode } = useAdminTheme();
   const { signOut, auth } = useSupabase();
 
   // Получаем доступные для этой роли маршруты

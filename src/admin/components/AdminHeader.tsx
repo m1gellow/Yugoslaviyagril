@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Bell, Moon, Sun } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAdminTheme } from '../context/AdminThemeContext';
 import NotificationsCenter from './notifications/NotificationsCenter';
 import { useSupabase } from '../../context/SupabaseContext';
 
@@ -11,7 +10,6 @@ interface AdminHeaderProps {
 }
 
 const AdminHeader: React.FC<AdminHeaderProps> = ({ activeTab, setActiveTab }) => {
-  const { isDarkMode, toggleTheme } = useAdminTheme();
   const { auth, signOut } = useSupabase();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const navigate = useNavigate();
@@ -69,14 +67,7 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ activeTab, setActiveTab }) =>
             {/* Центр уведомлений */}
             <NotificationsCenter />
 
-            {/* Переключатель темной темы */}
-            <button
-              onClick={toggleTheme}
-              type="button"
-              className="mr-2 p-2 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none"
-            >
-              {isDarkMode ? <Sun className="h-6 w-6 text-yellow-400" /> : <Moon className="h-6 w-6" />}
-            </button>
+           
 
             {/* Меню пользователя */}
             <div className="relative">

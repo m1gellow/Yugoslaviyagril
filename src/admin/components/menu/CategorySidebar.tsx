@@ -16,7 +16,6 @@ import {
   Sandwich,
 } from 'lucide-react';
 import { Category } from '../../../types';
-import { useAdminTheme } from '../../context/AdminThemeContext';
 
 interface CategorySidebarProps {
   categories: Category[];
@@ -29,8 +28,6 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({ categories, selectedC
   const [categoryName, setCategoryName] = useState('');
   const [categoryIcon, setCategoryIcon] = useState('');
   const [isAddingNew, setIsAddingNew] = useState(false);
-  const { isDarkMode } = useAdminTheme();
-
   // Функция для получения иконки категории
   const getCategoryIcon = (iconName: string | undefined | null) => {
     switch (iconName) {
@@ -131,9 +128,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({ categories, selectedC
                     type="text"
                     value={categoryName}
                     onChange={(e) => setCategoryName(e.target.value)}
-                    className={`w-full px-2 py-1 text-sm border rounded ${
-                      isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'
-                    }`}
+                    className={`w-full px-2 py-1 text-sm border rounded ${'border-gray-300'}`}
                     placeholder="Название категории"
                     autoFocus
                     onClick={(e) => e.stopPropagation()}
@@ -145,11 +140,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({ categories, selectedC
                       e.stopPropagation();
                       handleSaveCategory();
                     }}
-                    className={`p-1 rounded-full ${
-                      isDarkMode
-                        ? 'bg-green-900/30 text-green-400 hover:bg-green-900/50'
-                        : 'bg-green-100 text-green-600 hover:bg-green-200'
-                    }`}
+                    className={`p-1 rounded-full ${'bg-green-100 text-green-600 hover:bg-green-200'}`}
                   >
                     <Check className="w-4 h-4" />
                   </button>
@@ -158,11 +149,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({ categories, selectedC
                       e.stopPropagation();
                       cancelEditing();
                     }}
-                    className={`p-1 rounded-full ml-1 ${
-                      isDarkMode
-                        ? 'bg-red-900/30 text-red-400 hover:bg-red-900/50'
-                        : 'bg-red-100 text-red-600 hover:bg-red-200'
-                    }`}
+                    className={`p-1 rounded-full ml-1 ${'bg-red-100 text-red-600 hover:bg-red-200'}`}
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -171,11 +158,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({ categories, selectedC
             ) : (
               <>
                 <div className="flex items-center">
-                  <span
-                    className={`inline-block w-6 h-6 text-center mr-2 ${
-                      isDarkMode ? 'text-orange-400' : 'text-orange-500'
-                    }`}
-                  >
+                  <span className={`inline-block w-6 h-6 text-center mr-2 ${'text-orange-500'}`}>
                     {getCategoryIcon(category.icon)}
                   </span>
                   <span className="dark:text-gray-300">{category.name}</span>
@@ -202,9 +185,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({ categories, selectedC
                   type="text"
                   value={categoryName}
                   onChange={(e) => setCategoryName(e.target.value)}
-                  className={`w-full px-2 py-1 text-sm border rounded ${
-                    isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-2 py-1 text-sm border rounded ${'border-gray-300'}`}
                   placeholder="Название категории"
                   autoFocus
                 />
@@ -212,21 +193,13 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({ categories, selectedC
               <div className="flex">
                 <button
                   onClick={handleSaveCategory}
-                  className={`p-1 rounded-full ${
-                    isDarkMode
-                      ? 'bg-green-900/30 text-green-400 hover:bg-green-900/50'
-                      : 'bg-green-100 text-green-600 hover:bg-green-200'
-                  }`}
+                  className={`p-1 rounded-full ${'bg-green-100 text-green-600 hover:bg-green-200'}`}
                 >
                   <Check className="w-4 h-4" />
                 </button>
                 <button
                   onClick={cancelEditing}
-                  className={`p-1 rounded-full ml-1 ${
-                    isDarkMode
-                      ? 'bg-red-900/30 text-red-400 hover:bg-red-900/50'
-                      : 'bg-red-100 text-red-600 hover:bg-red-200'
-                  }`}
+                  className={`p-1 rounded-full ml-1 ${'bg-red-100 text-red-600 hover:bg-red-200'}`}
                 >
                   <X className="w-4 h-4" />
                 </button>

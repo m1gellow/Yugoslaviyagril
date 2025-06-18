@@ -55,6 +55,7 @@ export const SignIn = ({
         onClose();
         if (redirectToAdmin) {
           navigate('/admin');
+          window.location.reload()
         }
       }, 1000);
     } catch (err: any) {

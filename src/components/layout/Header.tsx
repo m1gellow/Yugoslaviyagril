@@ -69,16 +69,23 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
     setIsMobileMenuOpen(false);
   };
 
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-      navigate('/', { replace: true });
-      window.location.reload();
-      setIsMobileMenuOpen(false);
-    } catch (error) {
-      console.error('Sign out error:', error);
-    }
-  };
+const handleSignOut = async () => {
+  setIsMobileMenuOpen(false); // Закрываем меню сразу
+  
+  try {
+    // Быстрый выход без ожидания (если не нужен await)
+    signOut().then(() => {
+      window.location.href = '/'; // Жёсткий редирект
+    });
+    
+    // ИЛИ альтернатива с мягкой перезагрузкой:
+    // await signOut();
+    // navigate('/', { replace: true });
+    // window.location.reload();
+  } catch (error) {
+    console.error('Sign out error:', error);
+  }
+};
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

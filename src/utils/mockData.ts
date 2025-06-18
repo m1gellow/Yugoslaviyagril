@@ -233,9 +233,42 @@ export const restaurantProducts: RestaurantProduct[] = [
 ];
 
 export const sliderImages = [
-  'https://югославия-гриль.рф/static/img/slide1.png',
-  'https://югославия-гриль.рф/static/img/slide2.png',
-  'https://югославия-гриль.рф/static/img/slide3.png',
+  {
+    id: 1,
+    image: 'https://югославия-гриль.рф/static/img/slide1.png',
+    title: 'Домашняя атмосфера',
+    subtitle: 'и частичка Сербии',
+  },
+  {
+    id: 2,
+    image: 'https://югославия-гриль.рф/static/img/slide2.png',
+    title: 'Самые вкусные блюда',
+    subtitle: 'сербской кухни',
+  },
+  {
+    id: 3,
+    image: 'https://югославия-гриль.рф/static/img/slide3.png',
+    title: 'Если ты до сих пор мало знаешь о',
+    subtitle: 'сербской кухне - самое время попробовать!',
+  },
+  {
+    id: 4,
+    image: 'https://югославия-гриль.рф/static/img/slide1.png',
+    title: 'Домашняя атмосфера',
+    subtitle: 'и частичка Сербии',
+  },
+  {
+    id: 5,
+    image: 'https://югославия-гриль.рф/static/img/slide2.png',
+    title: 'Самые вкусные блюда',
+    subtitle: 'сербской кухни',
+  },
+  {
+    id: 6,
+    image: 'https://югославия-гриль.рф/static/img/slide3.png',
+    title: 'Если ты до сих пор мало знаешь о',
+    subtitle: 'сербской кухне - самое время попробовать!',
+  },
 ];
 
 export const sauces = [
