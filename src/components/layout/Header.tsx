@@ -38,21 +38,21 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [visible, setVisible] = useState(true);
+
   const navRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [isUserMenuOpen, setIsOpenUserMenu] = useState(false);
 
   const restaurantListRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        // Scrolling down
         setVisible(false);
       } else if (currentScrollY < lastScrollY) {
-        // Scrolling up
         setVisible(true);
       }
 
@@ -64,31 +64,9 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
-  const handleAdminClick = () => {
-    navigate('/admin/dashboard', { replace: true });
-    setIsMobileMenuOpen(false);
-  };
-
-  const handleSignOut = async () => {
-    setIsMobileMenuOpen(false); // Закрываем меню сразу
-
-    try {
-      // Быстрый выход без ожидания (если не нужен await)
-      signOut().then(() => {
-        window.location.href = '/'; // Жёсткий редирект
-      });
-
-      // ИЛИ альтернатива с мягкой перезагрузкой:
-      // await signOut();
-      // navigate('/', { replace: true });
-      // window.location.reload();
-    } catch (error) {
-      console.error('Sign out error:', error);
-    }
-  };
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      // Закрываем меню ресторанов если клик был вне его
       if (
         restaurantListRef.current &&
         !restaurantListRef.current.contains(event.target as Node) &&
@@ -96,13 +74,39 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
       ) {
         toggleRestaurantList();
       }
+      
+      // Закрываем меню пользователя если клик был вне его
+      if (
+        userMenuRef.current &&
+        !userMenuRef.current.contains(event.target as Node) &&
+        isUserMenuOpen
+      ) {
+        setIsOpenUserMenu(false);
+      }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [showRestaurantList]);
+  }, [showRestaurantList, isUserMenuOpen]);
+
+  const handleAdminClick = () => {
+    navigate('/admin/dashboard', { replace: true });
+    setIsMobileMenuOpen(false);
+  };
+
+  const handleSignOut = async () => {
+    setIsMobileMenuOpen(false);
+    setIsOpenUserMenu(false);
+
+    try {
+      await signOut();
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Sign out error:', error);
+    }
+  };
 
   const renderDesktopTopNav = () => (
     <div className="hidden md:block border-b border-gray-400/20">
@@ -307,12 +311,12 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
   );
 
   const renderDesktopBottomNav = () => (
-    <div className="hidden md:flex items-center py-[23px]  justify-between container mx-auto">
+    <div className="hidden md:flex items-center py-[23px] justify-between container mx-auto">
       <Link to={APP_ROUTES.HOME}>
         <img src={Logo} alt="Logo" />
       </Link>
 
-      <ul className="flex  items-center gap-[40px]">
+      <ul className="flex items-center gap-[40px]">
         <li>
           <Link to={APP_ROUTES.HOME} className="navLink flex gap-[8px] text-white">
             <Search color="white" size={25} />
@@ -320,7 +324,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
           </Link>
         </li>
         {auth.user ? (
-          <li className="relative group">
+          <li className="relative" ref={userMenuRef}>
             <div
               className="navLink flex gap-[8px] text-white cursor-pointer"
               onClick={() => setIsOpenUserMenu(!isUserMenuOpen)}
@@ -328,29 +332,41 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
               <CircleUserRound color="white" size={25} />
               <span className="hidden lg:inline">{auth.profile?.name || 'Аккаунт'}</span>
             </div>
-            <div
-              className={`absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg ${isDarkMode ? 'bg-gray-700' : 'bg-[#333]'} ${isUserMenuOpen ? 'block' : 'hidden'}`}
-            >
-              <div className="py-1">
-                <Link to={APP_ROUTES.CABINET} className="block px-4 py-2 text-white hover:bg-gray-600">
-                  Личный кабинет
-                </Link>
-                {auth.isOperator && (
-                  <button
-                    onClick={handleAdminClick}
-                    className="block w-full text-left px-4 py-2 text-white hover:bg-gray-600"
+            {isUserMenuOpen && (
+              <div
+                className={`absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg ${isDarkMode ? 'bg-gray-700' : 'bg-[#333]'}`}
+              >
+                <div className="py-1">
+                  <Link 
+                    to={APP_ROUTES.CABINET} 
+                    className="block px-4 py-2 text-white hover:bg-gray-600"
+                    onClick={() => setIsOpenUserMenu(false)}
                   >
-                    Админ-панель
+                    Личный кабинет
+                  </Link>
+                  {auth.isOperator && (
+                    <button
+                      onClick={() => {
+                        handleAdminClick();
+                        setIsOpenUserMenu(false);
+                      }}
+                      className="block w-full text-left px-4 py-2 text-white hover:bg-gray-600"
+                    >
+                      Админ-панель
+                    </button>
+                  )}
+                  <button
+                    onClick={() => {
+                      handleSignOut();
+                      setIsOpenUserMenu(false);
+                    }}
+                    className="block w-full text-left px-4 py-2 text-red-400 hover:bg-gray-600"
+                  >
+                    Выйти
                   </button>
-                )}
-                <button
-                  onClick={handleSignOut}
-                  className="block w-full text-left px-4 py-2 text-red-400 hover:bg-gray-600"
-                >
-                  Выйти
-                </button>
+                </div>
               </div>
-            </div>
+            )}
           </li>
         ) : (
           <li>
@@ -361,16 +377,16 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
           </li>
         )}
         <li>
-          <button onClick={toggleCartOpen} className="navLink  flex items-center gap-[20px] text-white relative">
+          <button onClick={toggleCartOpen} className="navLink flex items-center gap-[20px] text-white relative">
             {totalItems && (
-              <span className="absolute hidden -top-2  right-[70px] w-5 h-5 md:flex items-center justify-center rounded-full bg-gradient-to-r from-orange-400 to-red-500 text-white text-xs">
+              <span className="absolute hidden -top-2 right-[70px] w-5 h-5 md:flex items-center justify-center rounded-full bg-gradient-to-r from-orange-400 to-red-500 text-white text-xs">
                 {totalItems}
               </span>
             )}
 
             <ShoppingCart color="white" size={25} />
 
-            {totalPrice && <span className="block px-[5px]   rounded-full">{totalPrice}₽</span>}
+            {totalPrice && <span className="block px-[5px] rounded-full">{totalPrice}₽</span>}
           </button>
         </li>
       </ul>

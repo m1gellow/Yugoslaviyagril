@@ -98,6 +98,20 @@ export async function checkSupabaseConnection() {
   }
 }
 
+export async function getCurrentUserRole(): Promise<string | null> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return null;
+  
+  const { data, error } = await supabase
+    .from('users')
+    .select('user_role')
+    .eq('id', user.id)
+    .single();
+    
+  if (error || !data) return null;
+  return data.user_role;
+}
+
 // Упрощенная проверка прав доступа пользователя
 export async function checkUserAccess() {
   try {

@@ -11,10 +11,13 @@ import {
   Drumstick,
   Beef,
   CakeSlice,
+  Check,
 } from 'lucide-react';
 import { useSupabase } from '../../context/SupabaseContext';
 import { Link } from 'react-router-dom';
 import { useCategory } from '../../context/CategoryContext';
+import { motion, AnimatePresence } from 'framer-motion';
+
 
 interface CategoryNavProps {
   isDarkMode?: boolean;
@@ -23,9 +26,7 @@ interface CategoryNavProps {
 const CategoryNav: React.FC<CategoryNavProps> = ({ isDarkMode }) => {
   const { categories, isLoading } = useSupabase();
   const { selectedCategoryId, setSelectedCategoryId } = useCategory();
-
-  
-
+  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
 
   // Установка первой категории как активной при загрузке данных
   useEffect(() => {
@@ -35,90 +36,141 @@ const CategoryNav: React.FC<CategoryNavProps> = ({ isDarkMode }) => {
   }, [categories, selectedCategoryId, setSelectedCategoryId]);
 
   const getCategoryIcon = (iconName: string | undefined | null) => {
+    const iconClass = "w-6 h-6";
     switch (iconName) {
-      case 'burger':
-        return <Sandwich className="w-5 h-5 mr-2" />;
-      case 'grill':
-        return <Beef className="w-5 h-5 mr-2" />;
-      case 'group':
-        return <UtensilsCrossed className="w-5 h-5 mr-2" />;
-      case 'fries':
-        return <Utensils className="w-5 h-5 mr-2" />;
-      case 'bread':
-        return <CakeSlice className="w-5 h-5 mr-2" />;
-      case 'sauce':
-        return <Coffee className="w-5 h-5 mr-2" />;
-      case 'drink':
-        return <Beer className="w-5 h-5 mr-2" />;
-      case 'soup':
-        return <Soup className="w-5 h-5 mr-2" />;
-      case 'fish':
-        return <Utensils className="w-5 h-5 mr-2" />;
-      case 'appetizer':
-        return <Drumstick className="w-5 h-5 mr-2" />;
-      case 'salad':
-        return <Salad className="w-5 h-5 mr-2" />;
-      default:
-        return <Pizza className="w-5 h-5 mr-2" />;
+      case 'burger': return <Sandwich className={iconClass} />;
+      case 'grill': return <Beef className={iconClass} />;
+      case 'group': return <UtensilsCrossed className={iconClass} />;
+      case 'fries': return <Utensils className={iconClass} />;
+      case 'bread': return <CakeSlice className={iconClass} />;
+      case 'sauce': return <Coffee className={iconClass} />;
+      case 'drink': return <Beer className={iconClass} />;
+      case 'soup': return <Soup className={iconClass} />;
+      case 'fish': return <Utensils className={iconClass} />;
+      case 'appetizer': return <Drumstick className={iconClass} />;
+      case 'salad': return <Salad className={iconClass} />;
+      default: return <Pizza className={iconClass} />;
     }
   };
 
   if (isLoading) {
     return (
-      <div className="container mx-auto">
-        <div className="flex justify-between items-center mb-4">
-          <div
-            className={`flex-1 h-px ${isDarkMode ? 'bg-gradient-to-r from-transparent to-gray-700' : 'bg-gradient-to-r from-transparent to-gray-300'}`}
-          ></div>
-          <div className="px-4 relative">
-            <h2
-              className={`text-2xl font-bold flex items-center flex-wrap justify-center ${isDarkMode ? 'text-white' : ''}`}
-            >
-              <span className="mr-2">Загрузка категорий...</span>
-            </h2>
-          </div>
-          <div
-            className={`flex-1 h-px ${isDarkMode ? 'bg-gradient-to-r from-gray-700 to-transparent' : 'bg-gradient-to-r from-gray-300 to-transparent'}`}
-          ></div>
-        </div>
+      <div className="container mx-auto px-4">
+        {/* <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="mb-8"
+        >
+          <Skeleton className={`h-12 w-48 rounded-lg ${isDarkMode ? 'bg-gray-700' : 'bg-gray-200'}`} />
+        </motion.div>
 
-        <div className={`${isDarkMode ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-sm p-4 mb-5`}>
-          <div className="flex justify-center">
-            <div className="animate-pulse h-10 w-80 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
-          </div>
-        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6">
+          {[...Array(8)].map((_, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.05 }}
+            >
+              <Skeleton className={`aspect-square rounded-2xl ${isDarkMode ? 'bg-gray-700' : 'bg-gray-200'}`} />
+            </motion.div>
+          ))}
+        </div> */}
       </div>
     );
   }
 
-
-
   return (
     <div className="container mx-auto px-4">
-
-      <h2 className={` font-philosopher text-[40px]  mb-6 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-        Меню
-      </h2>
+      <motion.h2 
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className={`font-philosopher text-3xl md:text-4xl mb-6 md:mb-8 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}
+      >
+        Наше меню
+      </motion.h2>
       
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-4 lg:gap-5">
         {categories.map((category) => (
-          <Link 
-            to="/" 
+          <motion.div
             key={category.id}
-            onClick={() => setSelectedCategoryId(category.id)}
-            className={`relative aspect-square rounded-2xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:scale-105
-              ${selectedCategoryId === category.id ? 'ring-2 ring-primary-500' : ''}
-              ${isDarkMode ? 'bg-gray-700' : 'bg-gray-200'}`}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onMouseEnter={() => setHoveredCategory(category.id)}
+            onMouseLeave={() => setHoveredCategory(null)}
           >
-            <div className="absolute inset-0 flex items-end p-4 bg-gradient-to-t from-black/60 to-transparent">
-              <div className="flex items-center">
-                {getCategoryIcon(category.icon)}
-                <p className={`text-xl font-philosopher ${isDarkMode ? 'text-white' : 'text-white'}`}>
+            <Link 
+              to="/" 
+              onClick={() => setSelectedCategoryId(category.id)}
+              className={`relative block aspect-square rounded-2xl overflow-hidden shadow-sm transition-all duration-300
+                ${selectedCategoryId === category.id ? 
+                  'ring-3 ring-primary-500 shadow-lg' : 
+                  isDarkMode ? 
+                    'bg-gray-700 hover:bg-gray-600' : 
+                    'bg-gray-100 hover:bg-gray-50'
+                }`}
+            >
+              {/* Category Image Background (placeholder) */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${
+                isDarkMode ? 
+                  'from-gray-600 to-gray-800' : 
+                  'from-gray-200 to-gray-300'
+              }`}></div>
+              
+              {/* Hover Overlay */}
+              <AnimatePresence>
+                {hoveredCategory === category.id && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="absolute inset-0 bg-black/20"
+                  />
+                )}
+              </AnimatePresence>
+              
+              {/* Selected Indicator */}
+              {selectedCategoryId === category.id && (
+                <motion.div 
+                  className="absolute top-2 right-2 bg-primary-500 rounded-full p-1 shadow-md"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 500 }}
+                >
+                  <Check className="w-3 h-3 text-white" />
+                </motion.div>
+              )}
+              
+              {/* Content */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center">
+                <motion.div
+                  animate={{
+                    y: hoveredCategory === category.id ? -5 : 0
+                  }}
+                  transition={{ type: 'spring', stiffness: 300 }}
+                  className={`mb-2 p-3 rounded-full ${
+                    isDarkMode ? 'bg-gray-800/80' : 'bg-white/80'
+                  }`}
+                >
+                  {getCategoryIcon(category.icon)}
+                </motion.div>
+                <motion.p
+                  animate={{
+                    y: hoveredCategory === category.id ? 5 : 0
+                  }}
+                  transition={{ type: 'spring', stiffness: 300 }}
+                  className={`text-lg font-semibold ${
+                    isDarkMode ? 'text-white' : 'text-gray-800'
+                  }`}
+                >
                   {category.name}
-                </p>
+                </motion.p>
               </div>
-            </div>
-          </Link>
+            </Link>
+          </motion.div>
         ))}
       </div>
     </div>
