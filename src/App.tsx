@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-
+import { supabase } from './lib/supabase'; // Предполагается, что у вас есть клиент Supabase
 import TimeNotification from './components/common/TimeNotification';
 import CookieConsent from './components/common/CookieConsent';
 import { CartProvider } from './context/CartContext';
 import { RestaurantProvider } from './context/RestaurantContext';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import DeliveryPage from './pages/DeliveryPage';
 import UserCabinetPage from './pages/UserCabinetPage';
 import RestaurantPage from './pages/RestaurantPage';
@@ -23,21 +23,91 @@ import MainLayout from './components/layout/MainLayout';
 import { APP_ROUTES } from './utils/routes';
 import { CartModal } from './components/ui';
 import { CatogoryProvider } from './context/CategoryContext';
+import NotFoundPage from './pages/NoFoundPage';
+// Типы для пользователя и сессии
+type UserSession = {
+  user: {
+    id: string;
+    email?: string;
+    user_metadata?: {
+      role?: string;
+    };
+  };
+};
 
-// Вспомогательный компонент для определения текущего пути
 const TimeNotificationWrapper = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
   const isDarkMode = document.body.classList.contains('dark-mode');
 
-  // Отображаем уведомление только если мы не на странице админа
   if (isAdminRoute) return null;
-
   return <TimeNotification isDarkMode={isDarkMode} />;
 };
 
-// Компонент для защищенных маршрутов админ-панели - без проверки прав доступа
+// Улучшенный компонент для защищенных маршрутов админ-панели
 const ProtectedAdminRoute = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [hasAdminRole, setHasAdminRole] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        // Получаем текущую сессию
+        const { data: { session }, error } = await supabase.auth.getSession();
+
+        if (error || !session) {
+          throw error || new Error('No session found');
+        }
+
+        // Проверяем роль пользователя
+        const { data: userData, error: userError } = await supabase
+          .from('users')
+          .select('role')
+          .eq('id', session.user.id)
+          .single();
+
+        if (userError || !userData) {
+          throw userError || new Error('User data not found');
+        }
+
+        setIsAuthenticated(true);
+        setHasAdminRole(userData.role === 'admin');
+      } catch (error) {
+        console.error('Authentication check failed:', error);
+        setIsAuthenticated(false);
+        setHasAdminRole(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkAuth();
+
+    // Слушаем изменения аутентификации
+    const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_OUT') {
+        setIsAuthenticated(false);
+        setHasAdminRole(false);
+      }
+    });
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, []);
+
+  if (isLoading) {
+    return <h1>Loading...</h1>
+  }
+
+ 
+
+  if (!hasAdminRole) {
+    // Перенаправляем на домашнюю страницу, если нет прав администратора
+    return <Navigate to={APP_ROUTES.HOME} replace />;
+  }
+
   return <AdminPanel />;
 };
 
@@ -46,7 +116,6 @@ function App() {
   const { toggleTheme, isDarkMode } = useTheme();
 
   useEffect(() => {
-    // Проверка соединения с Supabase
     const checkConnection = async () => {
       try {
         const result = await checkSupabaseConnection();
@@ -66,9 +135,8 @@ function App() {
     checkConnection();
   }, []);
 
-  // Показываем ошибку, если не удалось подключиться к Supabase
   if (connectionStatus === 'error') {
-    <ErrorConnectSupabase />;
+    return <ErrorConnectSupabase />;
   }
 
   return (
@@ -90,13 +158,13 @@ function App() {
                   <Route path={APP_ROUTES.PRIVACY_POLICY} element={<PrivacyPolicyPage isDarkMode={isDarkMode} />} />
                   <Route path={APP_ROUTES.PROMOTIONS} element={<PromotionsPage isDarkMode={isDarkMode} />} />
                   <Route path={APP_ROUTES.KNOWLEDGE_BASE} element={<KnowledgeBasePage isDarkMode={isDarkMode} />} />
+                  <Route path='*' element={<NotFoundPage/>}/>
                 </Routes>
               </MainLayout>
 
               <ChatButton isDarkMode={isDarkMode} />
               <CartModal />
 
-              {/* Компонент пуш уведомлений */}
               <PushNotification isDarkMode={isDarkMode} />
             </div>
           </CatogoryProvider>

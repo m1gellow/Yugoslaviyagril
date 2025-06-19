@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Utensils,
   Coffee,
@@ -23,6 +23,9 @@ interface CategoryNavProps {
 const CategoryNav: React.FC<CategoryNavProps> = ({ isDarkMode }) => {
   const { categories, isLoading } = useSupabase();
   const { selectedCategoryId, setSelectedCategoryId } = useCategory();
+
+  
+
 
   // Установка первой категории как активной при загрузке данных
   useEffect(() => {
@@ -62,7 +65,7 @@ const CategoryNav: React.FC<CategoryNavProps> = ({ isDarkMode }) => {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto mb-8">
+      <div className="container mx-auto">
         <div className="flex justify-between items-center mb-4">
           <div
             className={`flex-1 h-px ${isDarkMode ? 'bg-gradient-to-r from-transparent to-gray-700' : 'bg-gradient-to-r from-transparent to-gray-300'}`}
@@ -88,9 +91,12 @@ const CategoryNav: React.FC<CategoryNavProps> = ({ isDarkMode }) => {
     );
   }
 
+
+
   return (
-    <div className="container mx-auto px-4 mt-8 md:mt-[180px]">
-      <h2 className={`text-2xl md:text-3xl font-bold mb-6 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+    <div className="container mx-auto px-4">
+
+      <h2 className={` font-philosopher text-[40px]  mb-6 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
         Меню
       </h2>
       
@@ -107,7 +113,7 @@ const CategoryNav: React.FC<CategoryNavProps> = ({ isDarkMode }) => {
             <div className="absolute inset-0 flex items-end p-4 bg-gradient-to-t from-black/60 to-transparent">
               <div className="flex items-center">
                 {getCategoryIcon(category.icon)}
-                <p className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-white'}`}>
+                <p className={`text-xl font-philosopher ${isDarkMode ? 'text-white' : 'text-white'}`}>
                   {category.name}
                 </p>
               </div>

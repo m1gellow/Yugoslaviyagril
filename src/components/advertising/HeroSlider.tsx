@@ -140,9 +140,9 @@ const HeroSlider: React.FC = () => {
 
                 <div className="absolute inset-0 " />
 
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-white text-lg md:text-xl font-bold mb-2 leading-tight">{slide.title}</h3>
-                  <p className="text-orange-300 text-sm md:text-base font-medium">{slide.subtitle}</p>
+                <div className="absolute bottom-0 font-philosopher left-0 right-0 p-6">
+                  <h3 className="text-white text-3xl mb-2 ">{slide.title}</h3>
+                  <p className="text-orange-300 text-2xl ">{slide.subtitle}</p>
                 </div>
 
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

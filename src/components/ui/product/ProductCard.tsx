@@ -3,11 +3,11 @@ import { Product } from '../../../types';
 import { HelpCircle, ShoppingCart, Heart, Star, MapPin } from 'lucide-react';
 import { useRestaurant } from '../../../context/RestaurantContext';
 
-
 import { useSupabase } from '../../../context/SupabaseContext';
 import { getFromStorage, saveToStorage } from '../../../utils/localStorageUtils';
 import ProductModal from '../modals/ProductModal';
 import DetailedProductView from '../../product/DetailedProductView';
+import MainButton from '../buttons/MainButton';
 
 // Ключ для localStorage
 const LIKED_ITEMS_KEY = 'yugoslavia_grill_liked_items';
@@ -126,11 +126,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, restaurantId, isDark
 
   return (
     <>
-      <div className="product col-span-1 my-3">
+      <div className="product col-span-1 my-3 cursor-pointer" onClick={handleOpenDetailedView}>
         <div
           className={`wrapper-product ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white'} shadow-md rounded-3xl h-full flex flex-col justify-between ${isShaking ? 'animate-[wiggle_0.5s_ease-in-out]' : ''}`}
         >
-          <div className="relative">
+          <div className="relative ">
             <img src={product.image} alt={product.name} className="w-full rounded-t-3xl object-cover h-48" />
             <button
               className={`absolute top-4 right-4 p-2 rounded-full ${isLiked ? 'bg-red-500 text-white' : isDarkMode ? 'bg-gray-700 text-gray-300' : 'bg-white text-gray-400'} shadow-md transition-all duration-300 hover:scale-110`}
@@ -192,7 +192,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, restaurantId, isDark
 
             <div className="flex justify-between items-start">
               <h3
-                className={`mb-3 mt-0 ps-3 text-lg font-medium border-l-4 border-gradient-orange-red ${isDarkMode ? 'text-white' : ''}`}
+                className={`mb-3 mt-0  ps-3 text-lg font-medium border-l-4 border-gradient-orange-red ${isDarkMode ? 'text-white' : ''}`}
               >
                 {product.name}
               </h3>
@@ -204,15 +204,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, restaurantId, isDark
                 {calculatedPrice.toFixed(0)} ₽
               </div>
 
-              <form className="text-center">
-                <button
-                  type="button"
-                  className="m-3 py-2 px-6 bg-gradient-to-r from-orange-400 to-red-500 text-white rounded-l-2xl rounded-r-md flex items-center"
-                  onClick={handleOpenDetailedView}
-                >
-                  <ShoppingCart className="w-4 h-4 mr-2" />В корзину
-                </button>
-              </form>
+          
+              <MainButton className='flex gap-2' variant="primary" size="lg" onClick={handleOpenDetailedView}>
+                <ShoppingCart/>
+                В корзину
+              </MainButton>
             </div>
           </div>
         </div>

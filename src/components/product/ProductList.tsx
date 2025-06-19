@@ -15,9 +15,9 @@ const ProductList: React.FC<ProductListProps> = ({ selectedRestaurantId = null, 
   const { selectedCategoryId } = useCategory();
 
   // Находим выбранную категорию
-  const selectedCategory = categories.find(category => category.id === selectedCategoryId);
+  const selectedCategory = categories.find((category) => category.id === selectedCategoryId);
   // Если категория не выбрана, используем "Все категории"
-  const categoryTitle = selectedCategory ? selectedCategory.name : "Все категории";
+  const categoryTitle = selectedCategory ? selectedCategory.name : 'Все категории';
 
   useEffect(() => {
     // Фильтрация продуктов по категории
@@ -67,12 +67,23 @@ const ProductList: React.FC<ProductListProps> = ({ selectedRestaurantId = null, 
     );
   }
 
-
   return (
-    <div className="container mx-auto ">
-      <h2 className={`text-2xl md:text-3xl font-bold mb-6 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-        {categoryTitle}
-      </h2>
+    <div className="container mx-auto mt-[180px]">
+      {filteredProducts.length === 0 ? (
+        <div className="container mx-auto text-center py-8">
+          <div
+            className={`max-w-md mx-auto p-6 ${isDarkMode ? 'bg-gray-800 text-gray-300' : 'bg-white text-gray-600'} rounded-lg shadow-md`}
+          >
+            <h3 className="text-xl font-semibold mb-2">В категории "{categoryTitle}" пока нет товаров</h3>
+            <p>Пожалуйста, выберите другую категорию или вернитесь позже.</p>
+          </div>
+        </div>
+      ) : (
+        <h2 className={`text-2xl font-philosopher text-[40px]  mb-6 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+          {categoryTitle}
+        </h2>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredProducts.map((product) => (
           <ProductCard

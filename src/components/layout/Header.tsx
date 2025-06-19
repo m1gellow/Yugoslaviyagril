@@ -40,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
   const [visible, setVisible] = useState(true);
   const navRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const [isUserMenuOpen,setIsOpenUserMenu ] = useState(false)
+  const [isUserMenuOpen, setIsOpenUserMenu] = useState(false);
 
   const restaurantListRef = useRef<HTMLDivElement>(null);
 
@@ -69,23 +69,23 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme }) => {
     setIsMobileMenuOpen(false);
   };
 
-const handleSignOut = async () => {
-  setIsMobileMenuOpen(false); // Закрываем меню сразу
-  
-  try {
-    // Быстрый выход без ожидания (если не нужен await)
-    signOut().then(() => {
-      window.location.href = '/'; // Жёсткий редирект
-    });
-    
-    // ИЛИ альтернатива с мягкой перезагрузкой:
-    // await signOut();
-    // navigate('/', { replace: true });
-    // window.location.reload();
-  } catch (error) {
-    console.error('Sign out error:', error);
-  }
-};
+  const handleSignOut = async () => {
+    setIsMobileMenuOpen(false); // Закрываем меню сразу
+
+    try {
+      // Быстрый выход без ожидания (если не нужен await)
+      signOut().then(() => {
+        window.location.href = '/'; // Жёсткий редирект
+      });
+
+      // ИЛИ альтернатива с мягкой перезагрузкой:
+      // await signOut();
+      // navigate('/', { replace: true });
+      // window.location.reload();
+    } catch (error) {
+      console.error('Sign out error:', error);
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -105,78 +105,86 @@ const handleSignOut = async () => {
   }, [showRestaurantList]);
 
   const renderDesktopTopNav = () => (
-  <div className="hidden md:block border-b border-gray-400/20">
-    <div className="container mx-auto">
-      <div className="flex items-center py-[23px] justify-between">
-        <ul className="flex gap-[40px]">
-          <li className="relative">
-            <div className="navLink flex gap-[8px] text-white cursor-pointer" onClick={toggleRestaurantList}>
-              <UtensilsCrossed color="white" size={27} />
-              <span className="hidden lg:inline">Рестораны</span>
-            </div>
-            {showRestaurantList && (
-              <div
-                ref={restaurantListRef}
-                className={`absolute top-full left-0 mt-2 w-64 rounded-md shadow-lg z-50 p-3 ${isDarkMode ? 'bg-gray-700' : 'bg-white'}`}
-              >
-                {allRestaurants.map((restaurant) => (
-                  <div key={restaurant.id} className="m-2 pb-2 border-b border-gray-600 last:border-b-0">
-                    <Link
-                      to={`/restaurant/${restaurant.id}`}
-                      className={`block hover:text-orange-500 transition ${isDarkMode ? 'text-white' : 'text-gray-800'}`}
-                      onClick={() => {
-                        setSelectedRestaurant(restaurant);
-                        toggleRestaurantList();
-                      }}
-                    >
-                      {restaurant.name} ({restaurant.address})
-                    </Link>
-                  </div>
-                ))}
+    <div className="hidden md:block border-b border-gray-400/20">
+      <div className="container mx-auto">
+        <div className="flex items-center py-[23px] justify-between">
+          <ul className="flex gap-[40px]">
+            <li className="relative">
+              <div className="navLink flex gap-[8px] text-white cursor-pointer" onClick={toggleRestaurantList}>
+                <UtensilsCrossed color="white" size={27} />
+                <span className="hidden lg:inline">Рестораны</span>
               </div>
-            )}
-          </li>
-          <li>
-            <Link to={APP_ROUTES.DELIVERY} className="navLink flex gap-[8px] text-white hover:text-orange-400 transition">
-              <Truck color="currentColor" size={27} />
-              <span className="hidden lg:inline">Доставка и оплата</span>
-            </Link>
-          </li>
-          <li>
-            <Link to={APP_ROUTES.PROMOTIONS} className="navLink flex gap-[8px] text-white hover:text-orange-400 transition">
-              <Gift color="currentColor" size={27} />
-              <span className="hidden lg:inline">Акции и бонусы</span>
-            </Link>
-          </li>
-        </ul>
+              {showRestaurantList && (
+                <div
+                  ref={restaurantListRef}
+                  className={`absolute top-full left-0 mt-2 w-64 rounded-md shadow-lg z-50 p-3 ${isDarkMode ? 'bg-gray-700' : 'bg-white'}`}
+                >
+                  {allRestaurants.map((restaurant) => (
+                    <div key={restaurant.id} className="m-2 pb-2 border-b border-gray-600 last:border-b-0">
+                      <Link
+                        to={`/restaurant/${restaurant.id}`}
+                        className={`block hover:text-orange-500 transition ${isDarkMode ? 'text-white' : 'text-gray-800'}`}
+                        onClick={() => {
+                          setSelectedRestaurant(restaurant);
+                          toggleRestaurantList();
+                        }}
+                      >
+                        {restaurant.name} ({restaurant.address})
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </li>
+            <li>
+              <Link
+                to={APP_ROUTES.DELIVERY}
+                className="navLink flex gap-[8px] text-white hover:text-orange-400 transition"
+              >
+                <Truck color="currentColor" size={27} />
+                <span className="hidden lg:inline">Доставка и оплата</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to={APP_ROUTES.PROMOTIONS}
+                className="navLink flex gap-[8px] text-white hover:text-orange-400 transition"
+              >
+                <Gift color="currentColor" size={27} />
+                <span className="hidden lg:inline">Акции и бонусы</span>
+              </Link>
+            </li>
+          </ul>
 
-        <div className="flex gap-[20px] lg:gap-[40px] items-center">
-          <div className="hidden lg:flex items-center gap-2">
-            <Phone color="white" size={20} />
-            <div className="flex flex-col">
-              <span className="text-[#AAA9A9] text-sm">Телефон Доставки</span>
-              <a href="tel:+79370000307" className="navLink text-white hover:text-orange-400 transition">
-                +7 (919) 381-27-70
-              </a>
+          <div className="flex gap-[20px] lg:gap-[40px] items-center">
+            <div className="hidden lg:flex items-center gap-2">
+              <Phone color="white" size={20} />
+              <div className="flex flex-col">
+                <span className="text-[#AAA9A9] text-sm">Телефон Доставки</span>
+                <a href="tel:+79370000307" className="navLink text-white hover:text-orange-400 transition">
+                  +7 (919) 381-27-70
+                </a>
+              </div>
             </div>
-          </div>
 
-          {toggleTheme && (
-            <button 
-              onClick={toggleTheme} 
-              className="p-2 rounded-full bg-gray-600 hover:bg-gray-500 transition-colors"
-              aria-label={isDarkMode ? 'Светлая тема' : 'Темная тема'}
-            >
-              {isDarkMode ? <Sun className="h-5 w-5 text-yellow-400" /> : <Moon className="h-5 w-5 text-white" />}
-            </button>
-          )}
-        
-          <MainButton>Заказать Доставку</MainButton>
+            {toggleTheme && (
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-full bg-gray-600 hover:bg-gray-500 transition-colors"
+                aria-label={isDarkMode ? 'Светлая тема' : 'Темная тема'}
+              >
+                {isDarkMode ? <Sun className="h-5 w-5 text-yellow-400" /> : <Moon className="h-5 w-5 text-white" />}
+              </button>
+            )}
+
+            <MainButton variant="primary" size="lg">
+              Заказать Доставку
+            </MainButton>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
 
   const renderMobileTopBar = () => (
     <div className="md:hidden py-[10px] flex items-center justify-between px-4">
@@ -313,12 +321,15 @@ const handleSignOut = async () => {
         </li>
         {auth.user ? (
           <li className="relative group">
-            <div className="navLink flex gap-[8px] text-white cursor-pointer" onClick={() => setIsOpenUserMenu(!isUserMenuOpen)}>
+            <div
+              className="navLink flex gap-[8px] text-white cursor-pointer"
+              onClick={() => setIsOpenUserMenu(!isUserMenuOpen)}
+            >
               <CircleUserRound color="white" size={25} />
               <span className="hidden lg:inline">{auth.profile?.name || 'Аккаунт'}</span>
             </div>
             <div
-              className={`absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg ${isDarkMode ? 'bg-gray-700' : 'bg-[#333]'} ${isUserMenuOpen ? "block" : 'hidden'}`}
+              className={`absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg ${isDarkMode ? 'bg-gray-700' : 'bg-[#333]'} ${isUserMenuOpen ? 'block' : 'hidden'}`}
             >
               <div className="py-1">
                 <Link to={APP_ROUTES.CABINET} className="block px-4 py-2 text-white hover:bg-gray-600">
@@ -371,7 +382,7 @@ const handleSignOut = async () => {
       <ul className="flex justify-around py-3">
         <li>
           <Link to={APP_ROUTES.HOME} className="flex flex-col items-center text-white">
-            <Search size={20}/>
+            <Search size={20} />
             <span className="text-xs mt-1">Поиск</span>
           </Link>
         </li>
