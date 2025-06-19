@@ -18,7 +18,7 @@ import { useSupabaseData } from '../hooks/useSupabaseData';
 
 import { supabase } from '../../lib/supabase';
 import { Restaurant, User } from '../../types';
-import UserStatusIndicator from '../../components/common/UserStatusIndicator';
+
 
 const UsersPage: React.FC = () => {
   const { isDarkMode } = useAdminTheme();
@@ -477,9 +477,7 @@ const UsersPage: React.FC = () => {
                         <div className="text-sm font-medium text-gray-900 dark:text-white">{user.name}</div>
                         <div className="text-sm text-gray-500 dark:text-gray-400">{user.id.substring(0, 8)}...</div>
                       </div>
-                      <div className="ml-2">
-                        <UserStatusIndicator userId={user.id} isDarkMode={isDarkMode} />
-                      </div>
+                      
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -523,9 +521,9 @@ const UsersPage: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
-                      className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadgeClass(user.status)}`}
+                      className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full`}
                     >
-                      {getStatusText(user.status)}
+                  
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -586,14 +584,9 @@ const UsersPage: React.FC = () => {
                 <h4 className="text-xl font-bold dark:text-white">{showUserDetails.name}</h4>
                 <p className="text-gray-500 dark:text-gray-400">{showUserDetails.id}</p>
                 <div className="mt-1">
-                  <UserStatusIndicator userId={showUserDetails.id} isDarkMode={isDarkMode} />
                 </div>
               </div>
-              <span
-                className={`ml-auto px-2 py-1 text-xs font-semibold rounded-full ${getStatusBadgeClass(showUserDetails.status)}`}
-              >
-                {getStatusText(showUserDetails.status)}
-              </span>
+  
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">

@@ -43,7 +43,6 @@
   color: rgb(0, 0, 0);
   text-decoration: none; 
   transition: color 150ms ease-in-out; 
-  font-size: 18px;
   
 }
 .navLink:hover{

@@ -3,7 +3,7 @@ import './App.css';
 
 import TimeNotification from './components/common/TimeNotification';
 import CookieConsent from './components/common/CookieConsent';
-import { CartProvider} from './context/CartContext';
+import { CartProvider } from './context/CartContext';
 import { RestaurantProvider } from './context/RestaurantContext';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import DeliveryPage from './pages/DeliveryPage';
@@ -22,6 +22,7 @@ import { ErrorConnectSupabase } from './components/ErrorComponents/ErrorConnectS
 import MainLayout from './components/layout/MainLayout';
 import { APP_ROUTES } from './utils/routes';
 import { CartModal } from './components/ui';
+import { CatogoryProvider } from './context/CategoryContext';
 
 // Вспомогательный компонент для определения текущего пути
 const TimeNotificationWrapper = () => {
@@ -74,29 +75,31 @@ function App() {
     <Router>
       <RestaurantProvider>
         <CartProvider>
-          <div className="app min-h-screen">
-            <CookieConsent isDarkMode={isDarkMode} />
-            <TimeNotificationWrapper />
+          <CatogoryProvider>
+            <div className="app min-h-screen">
+              <CookieConsent isDarkMode={isDarkMode} />
+              <TimeNotificationWrapper />
 
-            <MainLayout isDarkMode={isDarkMode} toggleTheme={toggleTheme}>
-              <Routes>
-                <Route path={APP_ROUTES.HOME} element={<HomePage isDarkMode={isDarkMode} />} />
-                <Route path={APP_ROUTES.DELIVERY} element={<DeliveryPage isDarkMode={isDarkMode} />} />
-                <Route path={APP_ROUTES.CABINET} element={<UserCabinetPage isDarkMode={isDarkMode} />} />
-                <Route path={APP_ROUTES.RESTAURANT.pattern} element={<RestaurantPage isDarkMode={isDarkMode} />} />
-                <Route path={APP_ROUTES.ADMIN} element={<ProtectedAdminRoute />} />
-                <Route path={APP_ROUTES.PRIVACY_POLICY} element={<PrivacyPolicyPage isDarkMode={isDarkMode} />} />
-                <Route path={APP_ROUTES.PROMOTIONS} element={<PromotionsPage isDarkMode={isDarkMode} />} />
-                <Route path={APP_ROUTES.KNOWLEDGE_BASE} element={<KnowledgeBasePage isDarkMode={isDarkMode} />} />
-              </Routes>
-            </MainLayout>
+              <MainLayout isDarkMode={isDarkMode} toggleTheme={toggleTheme}>
+                <Routes>
+                  <Route path={APP_ROUTES.HOME} element={<HomePage isDarkMode={isDarkMode} />} />
+                  <Route path={APP_ROUTES.DELIVERY} element={<DeliveryPage isDarkMode={isDarkMode} />} />
+                  <Route path={APP_ROUTES.CABINET} element={<UserCabinetPage isDarkMode={isDarkMode} />} />
+                  <Route path={APP_ROUTES.RESTAURANT.pattern} element={<RestaurantPage isDarkMode={isDarkMode} />} />
+                  <Route path={APP_ROUTES.ADMIN} element={<ProtectedAdminRoute />} />
+                  <Route path={APP_ROUTES.PRIVACY_POLICY} element={<PrivacyPolicyPage isDarkMode={isDarkMode} />} />
+                  <Route path={APP_ROUTES.PROMOTIONS} element={<PromotionsPage isDarkMode={isDarkMode} />} />
+                  <Route path={APP_ROUTES.KNOWLEDGE_BASE} element={<KnowledgeBasePage isDarkMode={isDarkMode} />} />
+                </Routes>
+              </MainLayout>
 
-            <ChatButton isDarkMode={isDarkMode} />
-            <CartModal />
+              <ChatButton isDarkMode={isDarkMode} />
+              <CartModal />
 
-            {/* Компонент пуш уведомлений */}
-            <PushNotification isDarkMode={isDarkMode} />
-          </div>
+              {/* Компонент пуш уведомлений */}
+              <PushNotification isDarkMode={isDarkMode} />
+            </div>
+          </CatogoryProvider>
         </CartProvider>
       </RestaurantProvider>
     </Router>

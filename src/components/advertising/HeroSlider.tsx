@@ -32,17 +32,16 @@ const HeroSlider: React.FC = () => {
   }, [isAutoPlaying, isMobile]);
 
   const goToPrevious = () => {
-    setCurrentIndex((prev) => 
-      (prev - 1 + (isMobile ? sliderImages.length : sliderImages.length - 2)) % 
-      (isMobile ? sliderImages.length : sliderImages.length - 2)
+    setCurrentIndex(
+      (prev) =>
+        (prev - 1 + (isMobile ? sliderImages.length : sliderImages.length - 2)) %
+        (isMobile ? sliderImages.length : sliderImages.length - 2),
     );
     setTranslateX(0);
   };
 
   const goToNext = () => {
-    setCurrentIndex((prev) => 
-      (prev + 1) % (isMobile ? sliderImages.length : sliderImages.length - 2)
-    );
+    setCurrentIndex((prev) => (prev + 1) % (isMobile ? sliderImages.length : sliderImages.length - 2));
     setTranslateX(0);
   };
 
@@ -66,7 +65,7 @@ const HeroSlider: React.FC = () => {
 
   const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
     if (!isDragging) return;
-    
+
     const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
     const moveX = clientX - startX;
     setTranslateX(moveX);
@@ -75,7 +74,7 @@ const HeroSlider: React.FC = () => {
   const handleDragEnd = () => {
     if (!isDragging) return;
     setIsDragging(false);
-    
+
     // Определяем, был ли это свайп (перетаскивание на достаточное расстояние)
     if (Math.abs(translateX) > 50) {
       if (translateX > 0) {
@@ -92,15 +91,11 @@ const HeroSlider: React.FC = () => {
     if (isMobile) {
       return [sliderImages[currentIndex]];
     }
-    return [
-      sliderImages[currentIndex],
-      sliderImages[currentIndex + 1],
-      sliderImages[currentIndex + 2]
-    ];
+    return [sliderImages[currentIndex], sliderImages[currentIndex + 1], sliderImages[currentIndex + 2]];
   };
 
   return (
-    <div 
+    <div
       className="w-full max-w-7xl mx-auto mt-[80px] px-4"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -109,14 +104,14 @@ const HeroSlider: React.FC = () => {
         {/* Левая кнопка - скрыта на мобильных */}
         <button
           onClick={goToPrevious}
-          className={`flex-shrink-0 w-12 h-12 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg z-10 ${isMobile ? 'hidden' : ''}`}
+          className={`flex-shrink-0 transform translate-x-10 w-12 h-12 bg-gradient-to-r from-orange-400 to-red-500 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg z-10 ${isMobile ? 'hidden' : ''}`}
           aria-label="Предыдущий слайд"
         >
           <ChevronLeft className="w-6 h-6 text-white" />
         </button>
 
         {/* Контейнер с слайдами */}
-        <div 
+        <div
           className="flex-1 overflow-hidden"
           ref={sliderRef}
           onMouseDown={handleDragStart}
@@ -127,35 +122,27 @@ const HeroSlider: React.FC = () => {
           onTouchMove={handleDragMove}
           onTouchEnd={handleDragEnd}
         >
-          <div 
+          <div
             className={`flex ${isMobile ? 'justify-center' : 'items-center gap-5 md:grid md:grid-cols-3'}`}
             style={{
               transform: isMobile ? `translateX(${translateX}px)` : 'none',
               transition: isDragging ? 'none' : 'transform 0.3s ease',
-              cursor: isDragging ? 'grabbing' : 'grab'
+              cursor: isDragging ? 'grabbing' : 'grab',
             }}
           >
             {getVisibleSlides().map((slide, index) => (
               <div
                 key={`${slide.id}-${currentIndex}-${index}`}
-                className={`relative h-64 md:h-80 ${isMobile ? 'w-full max-w-md' : 'w-70 md:w-auto'} rounded-2xl overflow-hidden group cursor-pointer transform transition-all duration-500 flex-shrink-0`}
+                className={`relative bg-gray-400 h-64 md:h-80 ${isMobile ? 'w-full max-w-md' : 'w-70 md:w-auto'} rounded-2xl overflow-hidden group cursor-pointer transform transition-all duration-500 flex-shrink-0`}
               >
-                <img
-                  src={slide.image}
-                  alt={slide.title}
-                  className="object-cover w-full h-full select-none"
-                  draggable="false"
-                />
-                
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                
+              
+              {/* Картинки сюда */}
+
+                <div className="absolute inset-0 " />
+
                 <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-white text-lg md:text-xl font-bold mb-2 leading-tight">
-                    {slide.title}
-                  </h3>
-                  <p className="text-orange-300 text-sm md:text-base font-medium">
-                    {slide.subtitle}
-                  </p>
+                  <h3 className="text-white text-lg md:text-xl font-bold mb-2 leading-tight">{slide.title}</h3>
+                  <p className="text-orange-300 text-sm md:text-base font-medium">{slide.subtitle}</p>
                 </div>
 
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -167,7 +154,7 @@ const HeroSlider: React.FC = () => {
         {/* Правая кнопка - скрыта на мобильных */}
         <button
           onClick={goToNext}
-          className={`flex-shrink-0 w-12 h-12 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg z-10 ${isMobile ? 'hidden' : ''}`}
+          className={`flex-shrink-0 w-12 h-12 transform -translate-x-10 bg-gradient-to-r from-orange-400 to-red-500 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg z-10 ${isMobile ? 'hidden' : ''}`}
           aria-label="Следующий слайд"
         >
           <ChevronRight className="w-6 h-6 text-white" />

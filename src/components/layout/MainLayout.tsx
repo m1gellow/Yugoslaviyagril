@@ -21,7 +21,7 @@ const MainLayout = ({ children, isDarkMode, toggleTheme }: MainLayoutProps) => {
         'bg-white text-gray-900': !isDarkMode,
       })}
     >
-      {!location.pathname.startsWith('/admin/') && <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />}
+      {!location.pathname.startsWith('/admin') && <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />}
 
       <main className="flex-grow">{children}</main>
       {!location.pathname.startsWith('/admin/') && <Footer isDarkMode={isDarkMode} />}

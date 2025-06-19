@@ -2,7 +2,8 @@
 interface MainButton{
     children: React.ReactNode;
     onClick?: () => void;
-    type?: "submit" | 'button'
+    type?: "submit" | 'button',
+    className: string
 }
 
 const MainButton = ({children, type="button"}: MainButton) => {

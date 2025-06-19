@@ -3,8 +3,8 @@ import CategoryNav from '../components/layout/CategoryNav';
 import HeroSlider from '../components/advertising/HeroSlider';
 
 import RecommendationEngine from '../components/common/RecommendationEngine';
-import RestaurantSelector from '../components/common/RestaurantSelector';
-import SearchBar from '../components/common/SearchBar';
+// import RestaurantSelector from '../components/common/RestaurantSelector';
+// import SearchBar from '../components/common/SearchBar';
 import { Product } from '../types';
 import DetailedProductView from '../components/product/DetailedProductView';
 import { ProductList } from '../components/product';
@@ -15,10 +15,10 @@ export const HomePage = ({ isDarkMode }: { isDarkMode: boolean }) => {
 
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
 
-  const handleSelectProduct = (product: Product) => {
-    setSelectedProduct(product);
-    setIsDetailedViewOpen(true);
-  };
+  // const handleSelectProduct = (product: Product) => {
+  //   setSelectedProduct(product);
+  //   setIsDetailedViewOpen(true);
+  // };
 
   return (
     <>
@@ -28,9 +28,9 @@ export const HomePage = ({ isDarkMode }: { isDarkMode: boolean }) => {
           {/* <div className="w-full md:w-1/4">
             <RestaurantSelector isDarkMode={isDarkMode} />
           </div> */}
-          <div className="w-full md:w-3/4">
+          {/* <div className="w-full md:w-3/4">
             <SearchBar onSelectProduct={handleSelectProduct} isDarkMode={isDarkMode} />
-          </div>
+          </div> */}
         </div>
 
         <RecommendationEngine isDarkMode={isDarkMode} />

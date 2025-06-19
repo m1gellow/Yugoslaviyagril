@@ -17,7 +17,7 @@ interface RestaurantPageProps {
 }
 
 const RestaurantPage: React.FC<RestaurantPageProps> = ({ isDarkMode = false }) => {
-  const { id } = useParams<RestaurantParams>();
+  const { id } = useParams();
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(26); // Бургеры по умолчанию
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 

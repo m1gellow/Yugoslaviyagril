@@ -170,7 +170,7 @@ const handleSignOut = async () => {
               {isDarkMode ? <Sun className="h-5 w-5 text-yellow-400" /> : <Moon className="h-5 w-5 text-white" />}
             </button>
           )}
-
+        
           <MainButton>Заказать Доставку</MainButton>
         </div>
       </div>
@@ -371,7 +371,7 @@ const handleSignOut = async () => {
       <ul className="flex justify-around py-3">
         <li>
           <Link to={APP_ROUTES.HOME} className="flex flex-col items-center text-white">
-            <Search size={20} />
+            <Search size={20}/>
             <span className="text-xs mt-1">Поиск</span>
           </Link>
         </li>

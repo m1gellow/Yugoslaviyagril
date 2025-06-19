@@ -1,18 +1,23 @@
-import React, { useState, useEffect } from 'react';
-
+import React, { useEffect, useState } from 'react';
 import { Product } from '../../types';
 import { useSupabase } from '../../context/SupabaseContext';
 import { ProductCard } from '../ui';
+import { useCategory } from '../../context/CategoryContext';
 
 interface ProductListProps {
-  selectedCategoryId: string | null;
   selectedRestaurantId?: string | null;
   isDarkMode?: boolean;
 }
 
-const ProductList: React.FC<ProductListProps> = ({ selectedCategoryId, selectedRestaurantId = null, isDarkMode }) => {
+const ProductList: React.FC<ProductListProps> = ({ selectedRestaurantId = null, isDarkMode }) => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const { products, isLoading, restaurantProducts } = useSupabase();
+  const { products, isLoading, restaurantProducts, categories } = useSupabase();
+  const { selectedCategoryId } = useCategory();
+
+  // Находим выбранную категорию
+  const selectedCategory = categories.find(category => category.id === selectedCategoryId);
+  // Если категория не выбрана, используем "Все категории"
+  const categoryTitle = selectedCategory ? selectedCategory.name : "Все категории";
 
   useEffect(() => {
     // Фильтрация продуктов по категории
@@ -26,8 +31,6 @@ const ProductList: React.FC<ProductListProps> = ({ selectedCategoryId, selectedR
           .map((rp) => rp.product_id),
       );
 
-      // Если для продукта нет специальной записи в restaurant_products,
-      // считаем его доступным со стандартной ценой
       filtered = filtered.filter(
         (p) =>
           availableProductIds.has(p.id) ||
@@ -64,21 +67,12 @@ const ProductList: React.FC<ProductListProps> = ({ selectedCategoryId, selectedR
     );
   }
 
-  if (filteredProducts.length === 0) {
-    return (
-      <div className="container mx-auto text-center py-8">
-        <div
-          className={`max-w-md mx-auto p-6 ${isDarkMode ? 'bg-gray-800 text-gray-300' : 'bg-white text-gray-600'} rounded-lg shadow-md`}
-        >
-          <h3 className="text-xl font-semibold mb-2">В этой категории пока нет товаров</h3>
-          <p>Пожалуйста, выберите другую категорию или вернитесь позже.</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto ">
+      <h2 className={`text-2xl md:text-3xl font-bold mb-6 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+        {categoryTitle}
+      </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredProducts.map((product) => (
           <ProductCard

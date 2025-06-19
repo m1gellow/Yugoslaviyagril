@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   Utensils,
   Coffee,
@@ -12,33 +12,25 @@ import {
   Beef,
   CakeSlice,
 } from 'lucide-react';
-import { useRestaurant } from '../../context/RestaurantContext';
 import { useSupabase } from '../../context/SupabaseContext';
+import { Link } from 'react-router-dom';
+import { useCategory } from '../../context/CategoryContext';
 
 interface CategoryNavProps {
-  onSelectCategory: (categoryId: string | null) => void;
   isDarkMode?: boolean;
 }
 
-const CategoryNav: React.FC<CategoryNavProps> = ({ onSelectCategory, isDarkMode }) => {
-  const { selectedRestaurant } = useRestaurant();
+const CategoryNav: React.FC<CategoryNavProps> = ({ isDarkMode }) => {
   const { categories, isLoading } = useSupabase();
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const { selectedCategoryId, setSelectedCategoryId } = useCategory();
 
   // Установка первой категории как активной при загрузке данных
   useEffect(() => {
-    if (categories.length > 0 && !activeCategory) {
-      setActiveCategory(categories[0].id);
-      onSelectCategory(categories[0].id);
+    if (categories.length > 0 && !selectedCategoryId) {
+      setSelectedCategoryId(categories[0].id);
     }
-  }, [categories, activeCategory, onSelectCategory]);
+  }, [categories, selectedCategoryId, setSelectedCategoryId]);
 
-  const handleCategoryClick = (categoryId: string) => {
-    setActiveCategory(categoryId);
-    onSelectCategory(categoryId);
-  };
-
-  // Функция для получения иконки категории
   const getCategoryIcon = (iconName: string | undefined | null) => {
     switch (iconName) {
       case 'burger':
@@ -97,47 +89,31 @@ const CategoryNav: React.FC<CategoryNavProps> = ({ onSelectCategory, isDarkMode 
   }
 
   return (
-    <div className="container mx-auto mb-8">
-      <div className="flex justify-between items-center mb-4">
-        <div
-          className={`flex-1 h-px ${isDarkMode ? 'bg-gradient-to-r from-transparent to-gray-700' : 'bg-gradient-to-r from-transparent to-gray-300'}`}
-        ></div>
-        <div className="px-4 relative">
-          <h2
-            className={`text-2xl font-bold flex items-center flex-wrap justify-center ${isDarkMode ? 'text-white' : ''}`}
+    <div className="container mx-auto px-4 mt-8 md:mt-[180px]">
+      <h2 className={`text-2xl md:text-3xl font-bold mb-6 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+        Меню
+      </h2>
+      
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+        {categories.map((category) => (
+          <Link 
+            to="/" 
+            key={category.id}
+            onClick={() => setSelectedCategoryId(category.id)}
+            className={`relative aspect-square rounded-2xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:scale-105
+              ${selectedCategoryId === category.id ? 'ring-2 ring-primary-500' : ''}
+              ${isDarkMode ? 'bg-gray-700' : 'bg-gray-200'}`}
           >
-            <span className="mr-2">Меню</span>
-            <span className="text-xl px-2 py-1 bg-gradient-to-r from-orange-400 to-red-500 text-white rounded-lg">
-              {selectedRestaurant.address}
-            </span>
-          </h2>
-        </div>
-        <div
-          className={`flex-1 h-px ${isDarkMode ? 'bg-gradient-to-r from-gray-700 to-transparent' : 'bg-gradient-to-r from-gray-300 to-transparent'}`}
-        ></div>
-      </div>
-
-      <div className={`${isDarkMode ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-sm p-4 mb-5`}>
-        <div className="overflow-x-auto pb-2">
-          <div className="flex flex-wrap gap-3 justify-center">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                className={`button-select__category whitespace-nowrap px-3 py-2 rounded-full border flex items-center ${
-                  activeCategory === category.id
-                    ? 'bg-gradient-to-r from-orange-400 to-red-500 text-white border-transparent'
-                    : isDarkMode
-                      ? 'bg-gray-700 hover:border-red-500 hover:bg-gray-600 border-gray-600 text-white'
-                      : 'bg-white hover:border-red-500 hover:bg-orange-100 border-gray-300'
-                }`}
-                onClick={() => handleCategoryClick(category.id)}
-              >
+            <div className="absolute inset-0 flex items-end p-4 bg-gradient-to-t from-black/60 to-transparent">
+              <div className="flex items-center">
                 {getCategoryIcon(category.icon)}
-                {category.name}
-              </button>
-            ))}
-          </div>
-        </div>
+                <p className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-white'}`}>
+                  {category.name}
+                </p>
+              </div>
+            </div>
+          </Link>
+        ))}
       </div>
     </div>
   );
